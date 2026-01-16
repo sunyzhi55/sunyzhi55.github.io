@@ -628,6 +628,8 @@
     gap: 12px;
     margin-bottom: 20px;
   }
+
+  /* 融合按钮 - 黑白背景下均清晰可见 */
   .fusion-btn {
     display: flex;
     align-items: center;
@@ -637,28 +639,68 @@
     border-radius: 25px;
     background: linear-gradient(
       135deg,
-      var(--color-accent),
-      var(--color-accent-secondary)
+      #6366f1 0%,
+      #8b5cf6 50%,
+      #a855f7 100%
     );
     color: white;
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
+    box-shadow: 
+      0 4px 15px rgba(99, 102, 241, 0.4),
+      0 0 0 1px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
+
+  .fusion-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 6px 25px rgba(99, 102, 241, 0.5),
+      0 0 0 1px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .fusion-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 
+      0 2px 10px rgba(99, 102, 241, 0.4),
+      inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
   .fusion-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: linear-gradient(
+      135deg,
+      #9ca3af 0%,
+      #6b7280 100%
+    );
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
+
   .btn-icon {
     font-size: 20px;
     animation: iconSpin 10s linear infinite;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
   }
+
   .fusion-btn:disabled .btn-icon {
     animation: none;
   }
+
+  .btn-text {
+    letter-spacing: 2px;
+  }
+
   @keyframes iconSpin {
     from {
       transform: rotate(0deg);
@@ -667,18 +709,25 @@
       transform: rotate(360deg);
     }
   }
+
   .btn-glow {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       45deg,
       transparent 30%,
-      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.25) 50%,
       transparent 70%
     );
     background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    animation: shimmer 2.5s ease-in-out infinite;
   }
+
+  .fusion-btn:disabled .btn-glow {
+    animation: none;
+    opacity: 0;
+  }
+
   @keyframes shimmer {
     from {
       background-position: 200% 0;
@@ -687,14 +736,35 @@
       background-position: -200% 0;
     }
   }
+
+  /* 重置按钮 - 同样优化 */
   .reset-btn {
     padding: 12px 20px;
     border-radius: 25px;
     background: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
+    color: var(--color-text);
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .reset-btn:hover {
+    background: var(--color-bg);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-1px);
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .reset-btn:active {
+    transform: translateY(0);
   }
 
   /* === 熔合结果卡片容器 - 重点优化 === */

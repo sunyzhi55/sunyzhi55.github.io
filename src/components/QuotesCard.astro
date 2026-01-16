@@ -57,9 +57,6 @@ const quotes = [
     </div>
   </div>
 
-  <div class="quotes-footer">
-    <span class="quotes-hint">悬停暂停 · 可选中文字</span>
-  </div>
 </div>
 
 <style>
@@ -84,20 +81,20 @@ const quotes = [
 
   .quotes-container {
     position: relative;
-    height: 120px;
+    height: 59px;
     overflow: hidden;
     mask-image: linear-gradient(
       to bottom,
       transparent 0%,
-      black 15%,
-      black 85%,
+      black 10%,
+      black 90%,
       transparent 100%
     );
     -webkit-mask-image: linear-gradient(
       to bottom,
       transparent 0%,
-      black 15%,
-      black 85%,
+      black 10%,
+      black 90%,
       transparent 100%
     );
   }
@@ -122,7 +119,7 @@ const quotes = [
   }
 
   .quote-item {
-    padding: 12px 0;
+    padding: 8px 0;
     border-bottom: 1px dashed var(--color-border);
     user-select: text;
     -webkit-user-select: text;

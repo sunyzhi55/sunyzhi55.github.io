@@ -14,7 +14,7 @@ const profile = {
 ---
 
 <aside class="left-sidebar w-full xl:w-72 flex-shrink-0">
-  <div class="sidebar sticky top-20 space-y-4">
+  <div class="sidebar sticky top-20 space-y-4 max-h-[calc(100vh-100px)] overflow-hidden">
     <!-- 个人信息卡片 -->
     <div class="profile-card card overflow-hidden relative">
       <!-- 全卡背景图 -->
@@ -118,7 +118,7 @@ const profile = {
       </h3>
       <div class="flex flex-wrap gap-2">
         {['Astro', 'Vue', 'TypeScript', 'Tailwind', 'Node.js', 'Git', 'Python'].map(skill => (
-          <span class="px-2 py-1 text-xs rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-accent)] border border-[var(--color-border)]">
+          <span class="px-2 py-0.5 text-[11px] rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-accent)] border border-[var(--color-border)]">
             {skill}
           </span>
         ))}
@@ -165,6 +165,11 @@ const profile = {
     min-width: 0;
   }
 
+  /* .left-sidebar .sidebar {
+    display: flex;
+    flex-direction: column;
+  } */
+
   @media (max-width: 1280px) {
     .left-sidebar {
       width: 100%;
@@ -174,6 +179,7 @@ const profile = {
       position: relative;
       top: 0;
       height: auto;
+      max-height: none;
     }
   }
 
