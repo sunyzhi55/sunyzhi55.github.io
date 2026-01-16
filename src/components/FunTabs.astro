@@ -5,58 +5,121 @@ import WuxingTaiji from './WuxingTaiji.astro';
 ---
 
 <div class="fun-tabs-container card p-0 overflow-hidden">
+  <!-- 卡片标题 -->
+  <div class="card-header">
+    <div class="header-content">
+      <span class="header-icon">🎮</span>
+      <div class="header-text">
+        <h2 class="header-title">互动空间</h2>
+        <p class="header-subtitle">探索、交互、体验 — 每一次点击都是一次对话</p>
+      </div>
+    </div>
+  </div>
+
   <!-- 标签页头部 -->
-  <div class="tabs-header flex border-b border-[var(--color-border)] bg-[var(--color-bg-secondary)]">
+  <div class="tabs-header">
     <button class="tab-btn active" data-tab="terminal">
       <span class="tab-icon">⌨️</span>
-      <span>Terminal</span>
+      <span class="tab-label">Terminal</span>
+      <span class="tab-badge">CLI</span>
     </button>
     <button class="tab-btn" data-tab="wuxing">
       <span class="tab-icon">☯️</span>
-      <span>太极 · 五行</span>
+      <span class="tab-label">太极 · 五行</span>
+      <span class="tab-badge">互动</span>
     </button>
     <button class="tab-btn" data-tab="lab">
       <span class="tab-icon">🧪</span>
-      <span>Lab</span>
+      <span class="tab-label">Lab</span>
+      <span class="tab-badge">实验</span>
     </button>
   </div>
 
   <!-- 标签页内容 -->
-  <div class="tabs-content p-4">
+  <div class="tabs-content">
     <!-- Terminal -->
     <div class="tab-panel active" data-panel="terminal">
-      <Terminal />
+      <div class="panel-inner terminal-panel">
+        <Terminal />
+      </div>
     </div>
 
     <!-- 太极五行 -->
     <div class="tab-panel hidden" data-panel="wuxing">
-      <WuxingTaiji />
+      <div class="panel-inner wuxing-panel">
+        <WuxingTaiji />
+      </div>
     </div>
 
     <!-- Lab -->
     <div class="tab-panel hidden" data-panel="lab">
-      <div class="lab-content text-center py-12">
-        <div class="text-6xl mb-4">🔬</div>
-        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2">实验室</h3>
-        <p class="text-[var(--color-text-secondary)]">更多创意实验正在酝酿中...</p>
-        <div class="mt-6 flex justify-center gap-4">
-          <div class="experiment-preview">
-            <div class="w-16 h-16 rounded-lg bg-[var(--color-bg-secondary)] flex items-center justify-center text-2xl opacity-50">
-              🎨
+      <div class="panel-inner lab-panel">
+        <div class="lab-content">
+          <div class="lab-hero">
+            <div class="lab-icon-wrapper">
+              <div class="lab-icon-glow"></div>
+              <div class="lab-icon">🔬</div>
             </div>
-            <span class="text-xs text-[var(--color-text-secondary)] mt-1">敬请期待</span>
+            <h3 class="lab-title">创意实验室</h3>
+            <p class="lab-desc">更多有趣的交互实验正在酝酿中...</p>
           </div>
-          <div class="experiment-preview">
-            <div class="w-16 h-16 rounded-lg bg-[var(--color-bg-secondary)] flex items-center justify-center text-2xl opacity-50">
-              🎵
+          
+          <div class="lab-preview-grid">
+            <div class="experiment-card">
+              <div class="experiment-icon">
+                <span>🎨</span>
+              </div>
+              <div class="experiment-info">
+                <span class="experiment-name">创意画板</span>
+                <span class="experiment-status">开发中</span>
+              </div>
+              <div class="experiment-progress">
+                <div class="progress-bar" style="width: 30%"></div>
+              </div>
             </div>
-            <span class="text-xs text-[var(--color-text-secondary)] mt-1">敬请期待</span>
+            
+            <div class="experiment-card">
+              <div class="experiment-icon">
+                <span>🎵</span>
+              </div>
+              <div class="experiment-info">
+                <span class="experiment-name">节拍可视化</span>
+                <span class="experiment-status">规划中</span>
+              </div>
+              <div class="experiment-progress">
+                <div class="progress-bar" style="width: 10%"></div>
+              </div>
+            </div>
+            
+            <div class="experiment-card">
+              <div class="experiment-icon">
+                <span>✨</span>
+              </div>
+              <div class="experiment-info">
+                <span class="experiment-name">粒子特效</span>
+                <span class="experiment-status">构思中</span>
+              </div>
+              <div class="experiment-progress">
+                <div class="progress-bar" style="width: 5%"></div>
+              </div>
+            </div>
+
+            <div class="experiment-card">
+              <div class="experiment-icon">
+                <span>🌌</span>
+              </div>
+              <div class="experiment-info">
+                <span class="experiment-name">星空漫游</span>
+                <span class="experiment-status">待开始</span>
+              </div>
+              <div class="experiment-progress">
+                <div class="progress-bar" style="width: 0%"></div>
+              </div>
+            </div>
           </div>
-          <div class="experiment-preview">
-            <div class="w-16 h-16 rounded-lg bg-[var(--color-bg-secondary)] flex items-center justify-center text-2xl opacity-50">
-              ✨
-            </div>
-            <span class="text-xs text-[var(--color-text-secondary)] mt-1">敬请期待</span>
+
+          <div class="lab-footer">
+            <span class="footer-hint">💡 有好的创意想法？欢迎交流！</span>
           </div>
         </div>
       </div>
@@ -66,19 +129,74 @@ import WuxingTaiji from './WuxingTaiji.astro';
 
 <style>
   .fun-tabs-container {
-    min-height: 400px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
   }
 
+  /* 卡片标题 */
+  .card-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-card) 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-icon {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
+
+  .header-text {
+    flex: 1;
+  }
+
+  .header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .header-subtitle {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin: 2px 0 0;
+  }
+
+  /* 标签页头部 */
   .tabs-header {
+    display: flex;
     overflow-x: auto;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 8px;
+    scrollbar-width: none;
+  }
+
+  .tabs-header::-webkit-scrollbar {
+    display: none;
   }
 
   .tab-btn {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 20px;
+    padding: 14px 18px;
     font-weight: 500;
+    font-size: 14px;
     color: var(--color-text-secondary);
     background: transparent;
     border: none;
@@ -86,6 +204,7 @@ import WuxingTaiji from './WuxingTaiji.astro';
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    position: relative;
   }
 
   .tab-btn:hover {
@@ -103,7 +222,36 @@ import WuxingTaiji from './WuxingTaiji.astro';
     font-size: 16px;
   }
 
+  .tab-label {
+    font-weight: 500;
+  }
+
+  .tab-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .tab-btn.active .tab-badge {
+    background: var(--color-accent);
+    color: white;
+    opacity: 1;
+  }
+
+  /* 标签页内容 */
+  .tabs-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+  }
+
   .tab-panel {
+    flex: 1;
     animation: fadeIn 0.3s ease;
   }
 
@@ -111,10 +259,15 @@ import WuxingTaiji from './WuxingTaiji.astro';
     display: none;
   }
 
+  .panel-inner {
+    height: 100%;
+    min-height: 380px;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
@@ -122,10 +275,170 @@ import WuxingTaiji from './WuxingTaiji.astro';
     }
   }
 
-  .experiment-preview {
+  /* Terminal 面板 */
+  .terminal-panel {
+    padding: 16px;
+  }
+
+  /* 太极五行面板 */
+  .wuxing-panel {
+    padding: 8px;
+    overflow-y: auto;
+    max-height: 480px;
+  }
+
+  /* Lab 面板 */
+  .lab-panel {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lab-content {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  .lab-hero {
+    margin-bottom: 28px;
+  }
+
+  .lab-icon-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+  }
+
+  .lab-icon-glow {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(15px);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 0.5; }
+  }
+
+  .lab-icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    background: var(--gradient-card);
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    box-shadow: 0 8px 24px var(--color-shadow);
+  }
+
+  .lab-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 8px;
+  }
+
+  .lab-desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* 实验预览网格 */
+  .lab-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .lab-preview-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .experiment-card {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .experiment-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
+
+  .experiment-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    background: var(--color-card);
+    border-radius: 8px;
+    font-size: 18px;
+    border: 1px solid var(--color-border);
+  }
+
+  .experiment-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .experiment-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .experiment-status {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+  }
+
+  .experiment-progress {
+    height: 3px;
+    background: var(--color-bg);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .experiment-progress .progress-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .lab-footer {
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-border);
+  }
+
+  .footer-hint {
+    font-size: 12px;
+    color: var(--color-text-secondary);
   }
 </style>
 

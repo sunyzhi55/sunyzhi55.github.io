@@ -24,7 +24,6 @@
 /
 ├── public/                 # 静态资源
 │   ├── avatar/            # 头像图片
-│   ├── cover/             # 背景图片
 │   ├── gallery/           # 图库图片
 │   ├── music/             # 音乐文件
 │   └── WuxingFusion.json  # 五行熔合配置

@@ -1,0 +1,221 @@
+---
+// QuotesCard 组件 - 名言励句轮播卡片
+
+const quotes = [
+  { text: "代码是写给人看的，只是恰好能被机器执行。", author: "Donald Knuth", lang: "zh" },
+  { text: "Stay hungry, stay foolish.", author: "Steve Jobs", lang: "en" },
+  { text: "简单是复杂的极致。", author: "达·芬奇", lang: "zh" },
+  { text: "The best way to predict the future is to create it.", author: "Peter Drucker", lang: "en" },
+  { text: "不积跬步，无以至千里。", author: "《荀子》", lang: "zh" },
+  { text: "First, solve the problem. Then, write the code.", author: "John Johnson", lang: "en" },
+  { text: "学而不思则罔，思而不学则殆。", author: "孔子", lang: "zh" },
+  { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman", lang: "en" },
+  { text: "工欲善其事，必先利其器。", author: "《论语》", lang: "zh" },
+  { text: "Make it work, make it right, make it fast.", author: "Kent Beck", lang: "en" },
+  { text: "天行健，君子以自强不息。", author: "《易经》", lang: "zh" },
+  { text: "Talk is cheap. Show me the code.", author: "Linus Torvalds", lang: "en" },
+  { text: "知之者不如好之者，好之者不如乐之者。", author: "孔子", lang: "zh" },
+  { text: "Any fool can write code that a computer can understand.", author: "Martin Fowler", lang: "en" },
+  { text: "路漫漫其修远兮，吾将上下而求索。", author: "屈原", lang: "zh" },
+  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", lang: "en" },
+  { text: "博观而约取，厚积而薄发。", author: "苏轼", lang: "zh" },
+  { text: "Code never lies, comments sometimes do.", author: "Ron Jeffries", lang: "en" },
+  { text: "千里之行，始于足下。", author: "老子", lang: "zh" },
+  { text: "Perfection is achieved not when there is nothing more to add.", author: "Antoine de Saint-Exupéry", lang: "en" },
+];
+---
+
+<div class="quotes-card card p-4">
+  <h3 class="quotes-header">
+    <span class="quotes-icon">💭</span>
+    <span>每日箴言</span>
+  </h3>
+  
+  <div class="quotes-container" id="quotesContainer">
+    <div class="quotes-track" id="quotesTrack">
+      {quotes.map((quote, index) => (
+        <div class="quote-item" data-lang={quote.lang}>
+          <blockquote class="quote-text">
+            "{quote.text}"
+          </blockquote>
+          <cite class="quote-author">
+            — {quote.author}
+          </cite>
+        </div>
+      ))}
+      {/* 复制一份用于无缝滚动 */}
+      {quotes.map((quote, index) => (
+        <div class="quote-item" data-lang={quote.lang}>
+          <blockquote class="quote-text">
+            "{quote.text}"
+          </blockquote>
+          <cite class="quote-author">
+            — {quote.author}
+          </cite>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="quotes-footer">
+    <span class="quotes-hint">悬停暂停 · 可选中文字</span>
+  </div>
+</div>
+
+<style>
+  .quotes-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quotes-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .quotes-icon {
+    font-size: 16px;
+  }
+
+  .quotes-container {
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+  }
+
+  .quotes-track {
+    display: flex;
+    flex-direction: column;
+    animation: scrollQuotes 180s linear infinite;
+  }
+
+  .quotes-container:hover .quotes-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes scrollQuotes {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  .quote-item {
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--color-border);
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    cursor: text;
+  }
+
+  .quote-item:last-child {
+    border-bottom: none;
+  }
+
+  .quote-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin: 0;
+    font-style: italic;
+    user-select: text;
+  }
+
+  .quote-item[data-lang="en"] .quote-text {
+    font-family: "Georgia", "Times New Roman", serif;
+    letter-spacing: 0.02em;
+  }
+
+  .quote-item[data-lang="zh"] .quote-text {
+    font-family: "Noto Serif SC", "Source Han Serif CN", serif;
+  }
+
+  .quote-author {
+    display: block;
+    font-size: 11px;
+    color: var(--color-accent);
+    margin-top: 6px;
+    font-style: normal;
+    text-align: right;
+    user-select: text;
+  }
+
+  .quotes-footer {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .quotes-hint {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+  }
+
+  /* 选中样式 */
+  .quotes-card ::selection {
+    background: var(--color-accent);
+    color: white;
+  }
+
+  .quotes-card ::-moz-selection {
+    background: var(--color-accent);
+    color: white;
+  }
+</style>
+
+<script>
+  // 确保文字可以被选中
+  const quotesContainer = document.getElementById('quotesContainer');
+  const quotesTrack = document.getElementById('quotesTrack');
+
+  if (quotesContainer && quotesTrack) {
+    // 鼠标进入时暂停动画
+    quotesContainer.addEventListener('mouseenter', () => {
+      quotesTrack.style.animationPlayState = 'paused';
+    });
+
+    // 鼠标离开时恢复动画
+    quotesContainer.addEventListener('mouseleave', () => {
+      // 只有在没有选中文字时才恢复
+      const selection = window.getSelection();
+      if (!selection || selection.toString().length === 0) {
+        quotesTrack.style.animationPlayState = 'running';
+      }
+    });
+
+    // 当选择结束且鼠标不在容器内时恢复动画
+    document.addEventListener('selectionchange', () => {
+      const selection = window.getSelection();
+      if (selection && selection.toString().length === 0) {
+        if (!quotesContainer.matches(':hover')) {
+          quotesTrack.style.animationPlayState = 'running';
+        }
+      }
+    });
+  }
+</script>

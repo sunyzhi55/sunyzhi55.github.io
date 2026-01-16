@@ -1,12 +1,14 @@
 ---
 // ProfileCard 组件 - 左侧个人信息卡片
+import QuotesCard from './QuotesCard.astro';
+
 const profile = {
   name: 'sunyzhi55',
-  title: '前端开发者 / 创意技术人',
+  title: '代码爱好者 / 创意技术人',
   avatar: 'https://avatars.githubusercontent.com/u/sunyzhi55',
   bio: '焰起于心，煴藏于河，熹生于夜。',
-  location: '中国',
-  email: 'sunyzhi55@example.com',
+  location: 'China',
+  email: 'sonaengji@gmail.com',
   social: [{ name: 'GitHub', url: 'https://github.com/sunyzhi55', icon: 'github' }],
 };
 ---
@@ -115,13 +117,16 @@ const profile = {
         <span>🛠️</span> 技能
       </h3>
       <div class="flex flex-wrap gap-2">
-        {['Astro', 'Vue', 'TypeScript', 'Tailwind', 'Node.js', 'Git'].map(skill => (
+        {['Astro', 'Vue', 'TypeScript', 'Tailwind', 'Node.js', 'Git', 'Python'].map(skill => (
           <span class="px-2 py-1 text-xs rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-accent)] border border-[var(--color-border)]">
             {skill}
           </span>
         ))}
       </div>
     </div>
+
+    <!-- 名言励句卡片 -->
+    <QuotesCard />
   </div>
 </aside>
 
