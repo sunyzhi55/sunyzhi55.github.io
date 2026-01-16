@@ -1,0 +1,156 @@
+---
+// BackgroundCarousel 组件 - 背景轮播
+---
+
+<div id="siteBg" class="site-bg" aria-label="背景轮播">
+  <div id="bgTrack" class="bg-track">
+    <div id="bgSlideA" class="bg-image"></div>
+    <div id="bgSlideB" class="bg-image"></div>
+  </div>
+</div>
+
+<button id="bgPrev" class="bg-btn bg-btn-left" type="button" aria-label="上一张">‹</button>
+<button id="bgNext" class="bg-btn bg-btn-right" type="button" aria-label="下一张">›</button>
+<div id="bgControls" class="bg-controls" role="group" aria-label="背景切换">
+  <span id="bgIndex" class="bg-index">1/1</span>
+</div>
+
+<script>
+  const bgImages = [
+    '/cover/cover_4.webp',
+    '/cover/cover_5.webp',
+    '/cover/cover_7.jpg',
+    '/cover/cover_8.jpg',
+    '/cover/cover_9.png',
+    '/cover/cover_10.png',
+    '/cover/cover_17.webp',
+    '/cover/cover_18.png',
+  ];
+
+  const bgTrack = document.getElementById('bgTrack');
+  const bgSlideA = document.getElementById('bgSlideA');
+  const bgSlideB = document.getElementById('bgSlideB');
+  const bgIndexEl = document.getElementById('bgIndex');
+  const bgControlsEl = document.getElementById('bgControls');
+  const prevBtn = document.getElementById('bgPrev');
+  const nextBtn = document.getElementById('bgNext');
+
+  let currentIndex = parseInt(localStorage.getItem('bgIndex') || '0', 10);
+  if (Number.isNaN(currentIndex)) currentIndex = 0;
+
+  let isAnimating = false;
+  let autoTimer: number | null = null;
+  const duration = 1200;
+  const easing = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
+
+  function getBgMode() {
+    return document.documentElement.getAttribute('data-bg-mode') || 'solid';
+  }
+
+  function updateBgControlsVisibility() {
+    if (!bgControlsEl) return;
+    const isTransparent = getBgMode() === 'transparent';
+    bgControlsEl.style.display = isTransparent ? 'flex' : 'none';
+    if (prevBtn) prevBtn.style.display = isTransparent ? 'block' : 'none';
+    if (nextBtn) nextBtn.style.display = isTransparent ? 'block' : 'none';
+    if (isTransparent) {
+      startAuto();
+    } else {
+      stopAuto();
+    }
+  }
+
+  function setSlides() {
+    if (!bgSlideA || !bgSlideB) return;
+    const nextIndex = (currentIndex + 1) % bgImages.length;
+    bgSlideA.style.backgroundImage = `url(${bgImages[currentIndex]})`;
+    bgSlideB.style.backgroundImage = `url(${bgImages[nextIndex]})`;
+    if (bgIndexEl) bgIndexEl.textContent = `${currentIndex + 1}/${bgImages.length}`;
+    localStorage.setItem('bgIndex', currentIndex.toString());
+  }
+
+  function animateTo(targetIndex: number, direction: 'next' | 'prev') {
+    if (!bgTrack || !bgSlideA || !bgSlideB) return;
+    isAnimating = true;
+
+    const handleEnd = () => {
+      bgTrack.removeEventListener('transitionend', handleEnd);
+      currentIndex = targetIndex;
+      bgTrack.style.transition = 'none';
+      bgTrack.style.transform = 'translateX(0)';
+      setSlides();
+      requestAnimationFrame(() => {
+        bgTrack.style.transition = `transform ${duration}ms ${easing}`;
+      });
+      isAnimating = false;
+    };
+
+    bgTrack.addEventListener('transitionend', handleEnd, { once: true });
+
+    if (direction === 'next') {
+      const nextIndex = (currentIndex + 1) % bgImages.length;
+      bgSlideA.style.backgroundImage = `url(${bgImages[currentIndex]})`;
+      bgSlideB.style.backgroundImage = `url(${bgImages[nextIndex]})`;
+      bgTrack.style.transition = `transform ${duration}ms ${easing}`;
+      bgTrack.style.transform = 'translateX(-50%)';
+    } else {
+      const prevIndex = (currentIndex - 1 + bgImages.length) % bgImages.length;
+      bgTrack.style.transition = 'none';
+      bgSlideA.style.backgroundImage = `url(${bgImages[prevIndex]})`;
+      bgSlideB.style.backgroundImage = `url(${bgImages[currentIndex]})`;
+      bgTrack.style.transform = 'translateX(-50%)';
+      requestAnimationFrame(() => {
+        bgTrack.style.transition = `transform ${duration}ms ${easing}`;
+        bgTrack.style.transform = 'translateX(0)';
+      });
+    }
+  }
+
+  function goNext() {
+    if (isAnimating) return;
+    const target = (currentIndex + 1) % bgImages.length;
+    animateTo(target, 'next');
+  }
+
+  function goPrev() {
+    if (isAnimating) return;
+    const target = (currentIndex - 1 + bgImages.length) % bgImages.length;
+    animateTo(target, 'prev');
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => {
+      goNext();
+    }, 9000);
+  }
+
+  function stopAuto() {
+    if (autoTimer !== null) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  function restartAuto() {
+    startAuto();
+  }
+
+  prevBtn?.addEventListener('click', () => {
+    goPrev();
+    restartAuto();
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    goNext();
+    restartAuto();
+  });
+
+  window.addEventListener('bg-mode-change', () => {
+    updateBgControlsVisibility();
+  });
+
+  setSlides();
+  updateBgControlsVisibility();
+  startAuto();
+</script>

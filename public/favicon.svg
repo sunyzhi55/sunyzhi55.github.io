@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="yinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2f4f4f"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="yangGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5dc"/>
+      <stop offset="100%" style="stop-color:#e8e4d4"/>
+    </linearGradient>
+  </defs>
+  <!-- 太极图 -->
+  <path d="M50,5 A45,45 0 0,1 50,95 A22.5,22.5 0 0,1 50,50 A22.5,22.5 0 0,0 50,5" fill="url(#yinGrad)"/>
+  <path d="M50,5 A45,45 0 0,0 50,95 A22.5,22.5 0 0,0 50,50 A22.5,22.5 0 0,1 50,5" fill="url(#yangGrad)"/>
+  <circle cx="50" cy="27.5" r="6" fill="url(#yinGrad)"/>
+  <circle cx="50" cy="72.5" r="6" fill="url(#yangGrad)"/>
+  <!-- 日月点缀 -->
+  <circle cx="50" cy="27.5" r="2" fill="#ffcc00"/>
+  <circle cx="50" cy="72.5" r="2" fill="#4a9eff"/>
+</svg>

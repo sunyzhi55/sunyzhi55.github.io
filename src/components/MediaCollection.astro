@@ -1,0 +1,245 @@
+---
+// MediaCollection 组件 - 音乐与图片收藏
+
+const musicItems = [
+  {
+    title: '静夜思',
+    artist: '古琴',
+    cover: '🎵',
+    mood: '宁静',
+  },
+  {
+    title: '高山流水',
+    artist: '古筝',
+    cover: '🎶',
+    mood: '悠远',
+  },
+  {
+    title: '春江花月夜',
+    artist: '民乐',
+    cover: '🎼',
+    mood: '唯美',
+  },
+];
+
+const imageItems = [
+  {
+    title: '晨雾',
+    src: '🌄',
+    mood: '朦胧',
+  },
+  {
+    title: '星河',
+    src: '🌌',
+    mood: '浩瀚',
+  },
+  {
+    title: '枯山水',
+    src: '🪨',
+    mood: '禅意',
+  },
+  {
+    title: '月色',
+    src: '🌙',
+    mood: '清冷',
+  },
+];
+---
+
+<section class="media-collection">
+  <div class="card p-6">
+    <div class="flex items-center gap-4 mb-4">
+      <span class="text-2xl">🎨</span>
+      <div>
+        <h2 class="text-xl font-semibold text-[var(--color-text)]">灵感素材库</h2>
+        <p class="text-xs text-[var(--color-text-secondary)]">采集灵感与氛围，用于视觉与创作参考</p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- 音乐收藏 -->
+      <div>
+        <h3 class="text-sm font-medium text-[var(--color-text-secondary)] mb-3 flex items-center gap-2">
+          <span>🎵</span> 音乐收藏
+        </h3>
+        <div class="space-y-2">
+          {musicItems.map((item, index) => (
+            <button 
+              class="music-item w-full flex items-center gap-3 p-3 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg)] transition-all text-left group"
+              data-music-index={index}
+            >
+              <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent-secondary)]/20 flex items-center justify-center text-xl">
+                {item.cover}
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-[var(--color-text)]">{item.title}</p>
+                <p class="text-xs text-[var(--color-text-secondary)]">{item.artist}</p>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-[var(--color-card)] text-[var(--color-accent)] opacity-0 group-hover:opacity-100 transition-opacity">
+                {item.mood}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- 图片收藏 -->
+      <div>
+        <h3 class="text-sm font-medium text-[var(--color-text-secondary)] mb-3 flex items-center gap-2">
+          <span>🖼️</span> 氛围图集
+        </h3>
+        <div class="grid grid-cols-2 gap-2">
+          {imageItems.map((item, index) => (
+            <button 
+              class="image-item aspect-square rounded-lg bg-gradient-to-br from-[var(--color-bg-secondary)] to-[var(--color-bg)] flex flex-col items-center justify-center gap-2 hover:scale-105 transition-all group"
+              data-image-index={index}
+            >
+              <span class="text-4xl">{item.src}</span>
+              <span class="text-xs text-[var(--color-text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity">
+                {item.title} · {item.mood}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 弹窗 -->
+<div id="mediaModal" class="media-modal hidden">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-content card p-6">
+    <button class="modal-close" onclick="closeModal()">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <div id="modalBody" class="text-center">
+      <!-- 动态内容 -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .media-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .media-modal.hidden {
+    display: none;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    position: relative;
+    min-width: 300px;
+    max-width: 400px;
+    animation: modalIn 0.3s ease;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover {
+    color: var(--color-text);
+  }
+
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>
+
+<script is:inline>
+  const musicData = [
+    { title: '静夜思', artist: '古琴', cover: '🎵', mood: '宁静' },
+    { title: '高山流水', artist: '古筝', cover: '🎶', mood: '悠远' },
+    { title: '春江花月夜', artist: '民乐', cover: '🎼', mood: '唯美' }
+  ];
+
+  const imageData = [
+    { title: '晨雾', src: '🌄', mood: '朦胧' },
+    { title: '星河', src: '🌌', mood: '浩瀚' },
+    { title: '枯山水', src: '🪨', mood: '禅意' },
+    { title: '月色', src: '🌙', mood: '清冷' }
+  ];
+
+  function openModal(content) {
+    const modal = document.getElementById('mediaModal');
+    const body = document.getElementById('modalBody');
+    body.innerHTML = content;
+    modal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('mediaModal');
+    modal.classList.add('hidden');
+  }
+
+  // 音乐项点击
+  document.querySelectorAll('.music-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const index = item.dataset.musicIndex;
+      const music = musicData[index];
+      openModal(`
+        <div class="text-6xl mb-4">${music.cover}</div>
+        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2">${music.title}</h3>
+        <p class="text-[var(--color-text-secondary)] mb-4">${music.artist}</p>
+        <div class="inline-block px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] text-sm text-[var(--color-accent)]">
+          氛围：${music.mood}
+        </div>
+        <p class="mt-4 text-sm text-[var(--color-text-secondary)]">
+          🎧 音乐播放功能开发中...
+        </p>
+      `);
+    });
+  });
+
+  // 图片项点击
+  document.querySelectorAll('.image-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const index = item.dataset.imageIndex;
+      const image = imageData[index];
+      openModal(`
+        <div class="text-8xl mb-4">${image.src}</div>
+        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2">${image.title}</h3>
+        <div class="inline-block px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] text-sm text-[var(--color-accent)]">
+          ${image.mood}
+        </div>
+      `);
+    });
+  });
+
+  // ESC 关闭弹窗
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>

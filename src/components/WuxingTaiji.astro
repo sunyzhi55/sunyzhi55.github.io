@@ -1,0 +1,1206 @@
+---
+// WuxingTaiji 组件 - 太极五行交互系统
+---
+
+<div class="wuxing-taiji-container">
+  <!-- 标题区域 -->
+  <div class="section-header">
+    <h2 class="section-title">☯ 五行熔合</h2>
+    <p class="section-subtitle">金木水火土，阴阳日月，万物归一</p>
+  </div>
+
+  <!-- 太极与五行环绕区域 -->
+  <div class="taiji-universe">
+    <!-- 能量光环层 -->
+    <div id="energyRings" class="energy-rings"></div>
+
+    <!-- 至阴 - 月 (左上角落) -->
+    <button
+      class="yin-yang-element moon-element"
+      data-element="月"
+      title="月 · 至阴"
+    >
+      <div class="element-glow moon-glow"></div>
+      <span class="element-symbol">🌙</span>
+      <span class="element-label">至阴</span>
+    </button>
+
+    <!-- 至阳 - 日 (右下角落) -->
+    <button
+      class="yin-yang-element sun-element"
+      data-element="日"
+      title="日 · 至阳"
+    >
+      <div class="element-glow sun-glow"></div>
+      <span class="element-symbol">☀️</span>
+      <span class="element-label">至阳</span>
+    </button>
+
+    <!-- 太极中心 -->
+    <div class="taiji-center">
+      <div class="taiji-outer-ring"></div>
+      <div class="taiji-inner-ring"></div>
+      <svg viewBox="0 0 200 200" class="taiji-svg">
+        <defs>
+          <linearGradient id="yinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a1a2e"></stop>
+            <stop offset="50%" style="stop-color:#2f4f4f"></stop>
+            <stop offset="100%" style="stop-color:#0a0a15"></stop>
+          </linearGradient>
+          <linearGradient id="yangGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f8f8f0"></stop>
+            <stop offset="50%" style="stop-color:#e8e4d4"></stop>
+            <stop offset="100%" style="stop-color:#d4d0c0"></stop>
+          </linearGradient>
+          <filter id="shadowFilter">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.4"
+            ></feDropShadow>
+          </filter>
+          <filter id="innerGlow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"
+            ></feGaussianBlur>
+            <feMerge>
+              <feMergeNode in="coloredBlur"></feMergeNode>
+              <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- 太极本体 - 持续旋转 -->
+        <g class="taiji-body" filter="url(#shadowFilter)">
+          <!-- 阴鱼 -->
+          <path
+            d="M100,10 A90,90 0 0,1 100,190 A45,45 0 0,1 100,100 A45,45 0 0,0 100,10"
+            fill="url(#yinGrad)"
+            class="yin-fish"></path>
+          <!-- 阳鱼 -->
+          <path
+            d="M100,10 A90,90 0 0,0 100,190 A45,45 0 0,0 100,100 A45,45 0 0,1 100,10"
+            fill="url(#yangGrad)"
+            class="yang-fish"></path>
+          <!-- 阴眼 -->
+          <circle
+            cx="100"
+            cy="55"
+            r="12"
+            fill="url(#yangGrad)"
+            filter="url(#innerGlow)"></circle>
+          <circle cx="100" cy="55" r="5" fill="url(#yinGrad)"></circle>
+          <!-- 阳眼 -->
+          <circle
+            cx="100"
+            cy="145"
+            r="12"
+            fill="url(#yinGrad)"
+            filter="url(#innerGlow)"></circle>
+          <circle cx="100" cy="145" r="5" fill="url(#yangGrad)"></circle>
+        </g>
+      </svg>
+    </div>
+
+    <!-- 五行元素环绕 - 五角星布局 -->
+    <div class="wuxing-orbit">
+      <!-- 水 - 正上方 (北方) -->
+      <button
+        class="wuxing-btn wuxing-water"
+        data-element="水"
+        data-position="north"
+        title="水 · 润下"
+      >
+        <div class="element-glow water-glow"></div>
+        <span class="element-icon">💧</span>
+        <span class="element-name">水</span>
+      </button>
+
+      <!-- 金 - 右上 (西方偏北) -->
+      <button
+        class="wuxing-btn wuxing-metal"
+        data-element="金"
+        data-position="west-north"
+        title="金 · 从革"
+      >
+        <div class="element-glow metal-glow"></div>
+        <span class="element-icon">⚱️</span>
+        <span class="element-name">金</span>
+      </button>
+
+      <!-- 土 - 右下 (中央偏西南) -->
+      <button
+        class="wuxing-btn wuxing-earth"
+        data-element="土"
+        data-position="south-west"
+        title="土 · 稼穑"
+      >
+        <div class="element-glow earth-glow"></div>
+        <span class="element-icon">🏔️</span>
+        <span class="element-name">土</span>
+      </button>
+
+      <!-- 木 - 左下 (东方偏南) -->
+      <button
+        class="wuxing-btn wuxing-wood"
+        data-element="木"
+        data-position="south-east"
+        title="木 · 曲直"
+      >
+        <div class="element-glow wood-glow"></div>
+        <span class="element-icon">🌿</span>
+        <span class="element-name">木</span>
+      </button>
+
+      <!-- 火 - 左上 (南方偏东) -->
+      <button
+        class="wuxing-btn wuxing-fire"
+        data-element="火"
+        data-position="east-north"
+        title="火 · 炎上"
+      >
+        <div class="element-glow fire-glow"></div>
+        <span class="element-icon">🔥</span>
+        <span class="element-name">火</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 选中元素展示 -->
+  <div id="selectedDisplay" class="selected-display">
+    <div class="selected-elements"></div>
+    <span class="hint-text">✨ 点击元素开始五行熔合 ✨</span>
+  </div>
+
+  <!-- 操作按钮区域 -->
+  <div class="action-buttons">
+    <button id="fusionBtn" class="fusion-btn" disabled>
+      <span class="btn-icon">☯</span>
+      <span class="btn-text">熔 · 合</span>
+      <div class="btn-glow"></div>
+    </button>
+    <button id="resetBtn" class="reset-btn">
+      <span>🔄 重置</span>
+    </button>
+  </div>
+
+  <!-- 熔合结果展示区域 (优化后布局) -->
+  <div id="fusionResultCard" class="fusion-result-card">
+    <!-- 等待占位符 -->
+    <div id="resultPlaceholder" class="result-placeholder">
+      <div class="placeholder-content">
+        <div class="placeholder-orb">
+          <span>🌀</span>
+        </div>
+        <p class="placeholder-text">等待元素熔合...</p>
+        <p class="placeholder-hint">选择元素后点击"熔合"按钮</p>
+      </div>
+    </div>
+
+    <!-- 结果展示内容 -->
+    <div id="fusionResult" class="fusion-result hidden">
+      <!-- 1. 核心结果：图标与名称 -->
+      <div class="result-core-header">
+        <div class="result-orb-container">
+          <div class="result-orb">
+            <span id="resultSymbol" class="result-symbol">☯️</span>
+          </div>
+          <div class="orb-ripple"></div>
+        </div>
+
+        <div class="result-title-group">
+          <span class="result-label">FUSION COMPLETED</span>
+          <h3 id="resultName" class="result-name">太和</h3>
+          <!-- 2. 熔合元素 (Input) 移到标题下方作为"成分"展示 -->
+          <div id="resultInputs" class="result-inputs"></div>
+        </div>
+
+        <!-- 背景大字装饰 -->
+        <div id="resultBgChar" class="result-bg-char">和</div>
+      </div>
+
+      <div class="result-divider"></div>
+
+      <!-- 3. 诗句 (Poem) - 核心氛围 -->
+      <div class="result-poem-section">
+        <div class="poem-quote-mark">❝</div>
+        <p id="resultPoem" class="result-poem">
+          "阴阳造化归一体，万象森罗共太和。"
+        </p>
+        <div class="poem-quote-mark right">❞</div>
+      </div>
+
+      <!-- 4. 释义 (Meaning) - 详细解释 -->
+      <div class="result-meaning-section">
+        <div class="meaning-label">
+          <span>天机释义</span>
+          <div class="line"></div>
+        </div>
+        <p id="resultMeaning" class="result-meaning">
+          五行相生相克达成绝对平衡...
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .wuxing-taiji-container {
+    position: relative;
+    width: 100%;
+    max-width: 680px; /* 稍微加宽一点 */
+    margin: 0 auto;
+    padding: 15px; /* 减少外围 Padding */
+    box-sizing: border-box;
+  }
+
+  /* 标题区域 */
+  .section-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-text);
+    margin-bottom: 6px;
+    letter-spacing: 4px;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    letter-spacing: 2px;
+    opacity: 0.8;
+  }
+
+  /* 太极宇宙区域 - 保持原样，适当缩小一点以适应移动端 */
+  .taiji-universe {
+    position: relative;
+    width: 300px; /* 略微调小基准尺寸 */
+    height: 300px;
+    margin: 0 auto 20px;
+    --orbit-radius: 115px;
+  }
+
+  /* ... (此处省略太极、日月、五行按钮的样式，保持原样即可，不需要动) ... */
+  /* 只需要确保以下几个关键样式存在 */
+  .energy-rings {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .energy-ring {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: ringPulse 2s ease-out forwards;
+  }
+  @keyframes ringPulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+  .taiji-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    z-index: 5;
+  }
+  .taiji-outer-ring {
+    position: absolute;
+    inset: -18px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    opacity: 0.4;
+    animation: ringRotate 30s linear infinite reverse;
+  }
+  .taiji-inner-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px dashed var(--color-accent);
+    opacity: 0.3;
+    animation: ringRotate 20s linear infinite;
+  }
+  @keyframes ringRotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .taiji-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.4));
+  }
+  .taiji-body {
+    transform-origin: 100px 100px;
+    animation: taijiRotate 20s linear infinite;
+  }
+  @keyframes taijiRotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .yin-yang-element {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s;
+    z-index: 15;
+  }
+  .moon-element {
+    left: 0;
+    top: 0;
+    background: linear-gradient(135deg, #1a1a3a 0%, #3d3d6a 50%, #1a1a3a 100%);
+  }
+  .sun-element {
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #5a4a00 0%, #9a7a20 50%, #5a4a00 100%);
+  }
+  .element-glow {
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .moon-glow {
+    background: radial-gradient(
+      circle,
+      rgba(150, 150, 255, 0.8) 0%,
+      transparent 70%
+    );
+  }
+  .sun-glow {
+    background: radial-gradient(
+      circle,
+      rgba(255, 200, 50, 0.8) 0%,
+      transparent 70%
+    );
+  }
+  .yin-yang-element:hover .element-glow,
+  .yin-yang-element.selected .element-glow {
+    opacity: 1;
+  }
+  .yin-yang-element.selected {
+    transform: scale(1.15);
+    border-color: white;
+  }
+  .element-symbol {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .element-label {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .wuxing-orbit {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+  }
+  .wuxing-btn {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s;
+    left: 50%;
+    top: 50%;
+    --angle: 0deg;
+    --scale: 1;
+    transform: translate(-50%, -50%) rotate(var(--angle))
+      translate(0, calc(var(--orbit-radius) * -1))
+      rotate(calc(var(--angle) * -1)) scale(var(--scale));
+  }
+  .wuxing-btn[data-position="north"] {
+    --angle: -90deg;
+  }
+  .wuxing-btn[data-position="west-north"] {
+    --angle: -18deg;
+  }
+  .wuxing-btn[data-position="south-west"] {
+    --angle: 54deg;
+  }
+  .wuxing-btn[data-position="south-east"] {
+    --angle: 126deg;
+  }
+  .wuxing-btn[data-position="east-north"] {
+    --angle: 198deg;
+  }
+  .wuxing-btn:hover {
+    --scale: 1.12;
+    z-index: 20;
+  }
+  .wuxing-btn.selected {
+    --scale: 1.2;
+    border-color: white;
+    z-index: 25;
+  }
+  .element-icon {
+    font-size: 20px;
+    z-index: 2;
+  }
+  .element-name {
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 2px;
+    z-index: 2;
+  }
+  .wuxing-btn .element-glow {
+    inset: -10px;
+  }
+  /* Glow Colors */
+  .metal-glow {
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(192, 192, 192, 0.4) 50%,
+      transparent 70%
+    );
+  }
+  .wood-glow {
+    background: radial-gradient(
+      circle,
+      rgba(100, 200, 100, 0.85) 0%,
+      rgba(50, 150, 50, 0.4) 50%,
+      transparent 70%
+    );
+  }
+  .water-glow {
+    background: radial-gradient(
+      circle,
+      rgba(100, 150, 255, 0.85) 0%,
+      rgba(50, 100, 200, 0.4) 50%,
+      transparent 70%
+    );
+  }
+  .fire-glow {
+    background: radial-gradient(
+      circle,
+      rgba(255, 150, 50, 0.85) 0%,
+      rgba(255, 80, 30, 0.4) 50%,
+      transparent 70%
+    );
+  }
+  .earth-glow {
+    background: radial-gradient(
+      circle,
+      rgba(200, 150, 100, 0.85) 0%,
+      rgba(150, 100, 50, 0.4) 50%,
+      transparent 70%
+    );
+  }
+  .wuxing-btn:hover .element-glow,
+  .wuxing-btn.selected .element-glow {
+    opacity: 1;
+  }
+  /* Button Colors */
+  .wuxing-metal {
+    background: linear-gradient(145deg, #f0f0f0 0%, #c0c0c0 50%, #909090 100%);
+    color: #404040;
+    box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);
+  }
+  .wuxing-wood {
+    background: linear-gradient(145deg, #7dd87d 0%, #4a9c4a 50%, #2d7d2d 100%);
+    color: #0a3a0a;
+    box-shadow: 0 4px 15px rgba(100, 180, 100, 0.4);
+  }
+  .wuxing-water {
+    background: linear-gradient(145deg, #6eb5ff 0%, #3d8bd8 50%, #1e5fa0 100%);
+    color: #001a40;
+    box-shadow: 0 4px 15px rgba(100, 150, 255, 0.4);
+  }
+  .wuxing-fire {
+    background: linear-gradient(145deg, #ff8c42 0%, #e63b2e 50%, #b32424 100%);
+    color: #400000;
+    box-shadow: 0 4px 15px rgba(255, 100, 50, 0.4);
+  }
+  .wuxing-earth {
+    background: linear-gradient(145deg, #d4a574 0%, #a67c52 50%, #785a3a 100%);
+    color: #2a1a0a;
+    box-shadow: 0 4px 15px rgba(180, 130, 80, 0.4);
+  }
+
+  /* 选中状态显示 - 简化 */
+  .selected-display {
+    text-align: center;
+    min-height: 40px;
+    margin-bottom: 16px;
+  }
+  .selected-elements {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .selected-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    animation: tagAppear 0.3s ease;
+  }
+  @keyframes tagAppear {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .selected-tag.metal {
+    background: linear-gradient(90deg, #e0e0e0, #c0c0c0);
+    color: #404040;
+  }
+  .selected-tag.wood {
+    background: linear-gradient(90deg, #7dd87d, #4a9c4a);
+    color: #0a3a0a;
+  }
+  .selected-tag.water {
+    background: linear-gradient(90deg, #6eb5ff, #3d8bd8);
+    color: #001a40;
+  }
+  .selected-tag.fire {
+    background: linear-gradient(90deg, #ff8c42, #e63b2e);
+    color: #400000;
+  }
+  .selected-tag.earth {
+    background: linear-gradient(90deg, #d4a574, #a67c52);
+    color: #2a1a0a;
+  }
+  .selected-tag.sun {
+    background: linear-gradient(90deg, #ffd700, #ff8c00);
+    color: #4a3a00;
+  }
+  .selected-tag.moon {
+    background: linear-gradient(90deg, #6a6aaa, #4a4a8a);
+    color: #e0e0f0;
+  }
+  .hint-text {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+  .selected-elements:not(:empty) + .hint-text {
+    display: none;
+  }
+
+  /* 操作按钮区域 - 紧凑化 */
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .fusion-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 36px;
+    border-radius: 25px;
+    background: linear-gradient(
+      135deg,
+      var(--color-accent),
+      var(--color-accent-secondary)
+    );
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .fusion-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-icon {
+    font-size: 20px;
+    animation: iconSpin 10s linear infinite;
+  }
+  .fusion-btn:disabled .btn-icon {
+    animation: none;
+  }
+  @keyframes iconSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .btn-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  .reset-btn {
+    padding: 12px 20px;
+    border-radius: 25px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+  }
+
+  /* === 熔合结果卡片容器 - 重点优化 === */
+  .fusion-result-card {
+    background: var(--color-card);
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* 确保撑满容器 */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  /* 结果展示卡片 */
+  .fusion-result {
+    /* 减少左右 Padding，增加空间 */
+    padding: 24px 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .fusion-result.hidden {
+    display: none;
+  }
+
+  /* 1. 头部区域：图标 + 名字 + 输入 */
+  .result-core-header {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  /* 图标光球 - 稍微缩小以适应窄屏 */
+  .result-orb-container {
+    position: relative;
+    width: 60px; /* 缩小 */
+    height: 60px; /* 缩小 */
+    flex-shrink: 0; /* 防止被挤压 */
+  }
+
+  .result-orb {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent), #4a3b69);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(var(--color-accent-rgb), 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    z-index: 2;
+  }
+
+  .result-symbol {
+    font-size: 30px; /* 缩小 */
+    line-height: 1;
+  }
+
+  .orb-ripple {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--color-accent);
+    opacity: 0;
+    animation: ripple 2s infinite;
+    z-index: 1;
+  }
+  @keyframes ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  /* 标题组 */
+  .result-title-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0; /* 关键：允许Flex子项收缩 */
+  }
+
+  .result-label {
+    font-size: 10px;
+    color: var(--color-text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .result-name {
+    font-size: 28px; /* 缩小一点防止换行 */
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    margin: 0 0 6px 0;
+    font-family: "KaiTi", "楷体", "STKaiti", serif;
+    line-height: 1.1;
+    white-space: nowrap; /* 尽量不换行 */
+  }
+
+  .result-inputs {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .result-input-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* 背景大字 - 调整位置防止遮挡 */
+  .result-bg-char {
+    position: absolute;
+    right: -10px;
+    top: -15px;
+    font-size: 100px;
+    font-family: "KaiTi", "楷体", serif;
+    color: white;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 3. 诗句区域 (Poem) - 彻底重构，增加宽度 */
+  .result-poem-section {
+    text-align: center;
+    /* 去掉之前的深色背景，改为通透设计 */
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    width: 100%; /* 强制占满宽度 */
+    margin-top: 8px;
+  }
+
+  .result-poem {
+    font-family: "KaiTi", "楷体", "Songti SC", serif;
+    font-size: 18px; /* 保持大字体 */
+    color: var(--color-text, #e0e0e0);
+    line-height: 1.5;
+    margin: 0;
+    font-style: normal;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    writing-mode: horizontal-tb;
+    /* 允许文本自然换行，但因为宽度够了，不会频繁换行 */
+    padding: 0 10px;
+  }
+
+  .poem-quote-mark {
+    display: none;
+  } /* 在窄屏下引号太占位置，隐藏或改为背景 */
+
+  /* 4. 释义区域 (Meaning) */
+  .result-meaning-section {
+    padding: 0;
+    width: 100%;
+  }
+
+  .meaning-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .meaning-label span {
+    font-size: 11px;
+    color: var(--color-text-secondary, #aaa);
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .meaning-label .line {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    flex: 1;
+  }
+
+  .result-meaning {
+    font-size: 13px;
+    color: var(--color-text-secondary, #ccc);
+    line-height: 1.6;
+    margin: 0;
+    /* 取消 justify，防止字数少时拉伸难看 */
+    text-align: left;
+    writing-mode: horizontal-tb;
+    opacity: 0.9;
+  }
+
+  /* 占位符样式微调 */
+  .result-placeholder {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .result-placeholder.hidden {
+    display: none;
+  }
+  .placeholder-orb {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    border: 2px dashed var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 24px;
+    opacity: 0.7;
+  }
+  .placeholder-text {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    margin: 0 0 4px 0;
+  }
+  .placeholder-hint {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* 融合动画 */
+  .fusion-animating .taiji-body {
+    animation: taijiRotate 2s linear infinite;
+  }
+  .fusion-animating .wuxing-btn.selected,
+  .fusion-animating .yin-yang-element.selected {
+    animation: elementPulse 0.5s ease infinite;
+  }
+  @keyframes elementPulse {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) rotate(var(--angle))
+        translate(0, calc(var(--orbit-radius) * -1))
+        rotate(calc(var(--angle) * -1)) scale(1.2);
+    }
+    50% {
+      transform: translate(-50%, -50%) rotate(var(--angle))
+        translate(0, calc(var(--orbit-radius) * -1))
+        rotate(calc(var(--angle) * -1)) scale(1.35);
+    }
+  }
+
+  /* 极窄屏幕适配 */
+  @media (max-width: 360px) {
+    .taiji-universe {
+      transform: scale(0.9);
+      margin-bottom: 10px;
+    }
+    .fusion-result {
+      padding: 20px 12px;
+    } /* 进一步减少内边距 */
+    .result-name {
+      font-size: 24px;
+    }
+    .result-orb-container {
+      width: 50px;
+      height: 50px;
+    }
+    .result-symbol {
+      font-size: 24px;
+    }
+  }
+</style>
+<script>
+  // 状态管理
+  let selectedElements: Set<string> = new Set();
+  let fusionData: Array<{
+    inputs: string[];
+    name: string;
+    symbol: string;
+    meaning: string;
+    poem: string;
+  }> = [];
+
+  // 元素映射
+  const elementMap: Record<
+    string,
+    { name: string; class: string; color: string }
+  > = {
+    金: { name: "metal", class: "metal", color: "rgba(192, 192, 192, 0.6)" },
+    木: { name: "wood", class: "wood", color: "rgba(100, 180, 100, 0.6)" },
+    水: { name: "water", class: "water", color: "rgba(100, 150, 255, 0.6)" },
+    火: { name: "fire", class: "fire", color: "rgba(255, 100, 50, 0.6)" },
+    土: { name: "earth", class: "earth", color: "rgba(180, 130, 80, 0.6)" },
+    日: { name: "sun", class: "sun", color: "rgba(255, 200, 50, 0.6)" },
+    月: { name: "moon", class: "moon", color: "rgba(150, 150, 255, 0.6)" },
+  };
+
+  // 默认融合结果
+  const defaultFusion: {
+    inputs: string[];
+    name: string;
+    symbol: string;
+    meaning: string;
+    poem: string;
+  } = {
+    inputs: [],
+    name: "混沌",
+    symbol: "🌀",
+    meaning:
+      "元素间剧烈激荡，归于太极之始，万物尚在孕育之中。道法自然，无名天地之始。",
+    poem: "道生一，一生二，二生三，三生万物。",
+  };
+
+  // 加载融合数据
+  async function loadFusionData() {
+    try {
+      const response = await fetch("/WuxingFusion.json");
+      fusionData = await response.json();
+    } catch (error) {
+      console.error("Failed to load fusion data:", error);
+      fusionData = [defaultFusion];
+    }
+  }
+
+  // 初始化
+  loadFusionData();
+
+  // 获取元素
+  const wuxingBtns = document.querySelectorAll(".wuxing-btn");
+  const yinYangBtns = document.querySelectorAll(".yin-yang-element");
+  const fusionBtn = document.getElementById("fusionBtn") as HTMLButtonElement;
+  const resetBtn = document.getElementById("resetBtn") as HTMLButtonElement;
+  const selectedDisplay = document.getElementById("selectedDisplay");
+  const fusionResult = document.getElementById("fusionResult");
+  const resultPlaceholder = document.getElementById("resultPlaceholder");
+  const resultSymbol = document.getElementById("resultSymbol");
+  const resultName = document.getElementById("resultName");
+  const resultPoem = document.getElementById("resultPoem");
+  const resultMeaning = document.getElementById("resultMeaning");
+  const resultInputs = document.getElementById("resultInputs");
+  const resultBgChar = document.getElementById("resultBgChar");
+  const energyRings = document.getElementById("energyRings");
+  const taijiUniverse = document.querySelector(".taiji-universe");
+
+  // 更新选中状态显示
+  function updateDisplay() {
+    const selectedContainer =
+      selectedDisplay?.querySelector(".selected-elements");
+    if (!selectedContainer) return;
+
+    selectedContainer.innerHTML = "";
+
+    selectedElements.forEach((el) => {
+      const info = elementMap[el];
+      if (info) {
+        const tag = document.createElement("span");
+        tag.className = `selected-tag ${info.class}`;
+        tag.innerHTML = `<span>${el}</span>`;
+        selectedContainer.appendChild(tag);
+      }
+    });
+
+    // 更新融合按钮状态
+    const canFuse = selectedElements.size >= 1;
+    fusionBtn.disabled = !canFuse;
+  }
+
+  // 创建能量光环
+  function createEnergyRing(element: string) {
+    const info = elementMap[element];
+    if (!info || !energyRings) return;
+
+    const ring = document.createElement("div");
+    ring.className = "energy-ring";
+    ring.style.cssText = `
+      inset: 60px;
+      border: 3px solid ${info.color};
+      box-shadow: 0 0 25px ${info.color};
+    `;
+    energyRings.appendChild(ring);
+
+    setTimeout(() => ring.remove(), 2000);
+  }
+
+  // 元素点击处理
+  function handleElementClick(btn: Element, element: string) {
+    if (selectedElements.has(element)) {
+      selectedElements.delete(element);
+      btn.classList.remove("selected");
+    } else {
+      selectedElements.add(element);
+      btn.classList.add("selected");
+      createEnergyRing(element);
+    }
+
+    // 隐藏之前的融合结果
+    fusionResult?.classList.add("hidden");
+    resultPlaceholder?.classList.remove("hidden");
+    updateDisplay();
+  }
+
+  // 五行元素点击
+  wuxingBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const element = (btn as HTMLElement).dataset.element!;
+      handleElementClick(btn, element);
+    });
+  });
+
+  // 日月元素点击
+  yinYangBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const element = (btn as HTMLElement).dataset.element!;
+      handleElementClick(btn, element);
+    });
+  });
+
+  // 查找融合结果
+  function findFusionResult(inputs: string[]): typeof defaultFusion {
+    // 排序输入以便匹配
+    const sortedInputs = [...inputs].sort();
+
+    for (const fusion of fusionData) {
+      const sortedFusionInputs = [...fusion.inputs].sort();
+      if (
+        sortedInputs.length === sortedFusionInputs.length &&
+        sortedInputs.every((v, i) => v === sortedFusionInputs[i])
+      ) {
+        return fusion;
+      }
+    }
+
+    return defaultFusion;
+  }
+
+  // 融合按钮点击
+  fusionBtn?.addEventListener("click", async () => {
+    if (selectedElements.size === 0) return;
+
+    // 添加融合动画
+    taijiUniverse?.classList.add("fusion-animating");
+    fusionBtn.disabled = true;
+
+    // 等待动画
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // 获取融合结果
+    const inputs = Array.from(selectedElements);
+    const result = findFusionResult(inputs);
+
+    // 显示结果
+    if (resultSymbol) resultSymbol.textContent = result.symbol;
+    if (resultName) resultName.textContent = result.name;
+    if (resultPoem) resultPoem.textContent = `"${result.poem}"`;
+    if (resultMeaning) resultMeaning.textContent = result.meaning;
+
+    // 设置背景大字 - 取名字的第一个字
+    if (resultBgChar) {
+      resultBgChar.textContent = result.name.charAt(0);
+    }
+
+    if (resultInputs) {
+      resultInputs.innerHTML = inputs
+        .map((el) => `<span class="result-input-tag">${el}</span>`)
+        .join("");
+    }
+
+    // 切换显示
+    resultPlaceholder?.classList.add("hidden");
+    fusionResult?.classList.remove("hidden");
+
+    // 移除动画类
+    taijiUniverse?.classList.remove("fusion-animating");
+    fusionBtn.disabled = false;
+  });
+
+  // 重置按钮点击
+  resetBtn?.addEventListener("click", () => {
+    selectedElements.clear();
+
+    // 移除所有选中状态
+    wuxingBtns.forEach((btn) => btn.classList.remove("selected"));
+    yinYangBtns.forEach((btn) => btn.classList.remove("selected"));
+
+    // 重置显示
+    fusionResult?.classList.add("hidden");
+    resultPlaceholder?.classList.remove("hidden");
+    updateDisplay();
+  });
+</script>

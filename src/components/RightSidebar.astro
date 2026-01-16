@@ -1,0 +1,38 @@
+---
+// RightSidebar 组件 - 右侧信息流（固定不滚动）
+import BlogUniverse from './BlogUniverse.astro';
+import DeploySites from './DeploySites.astro';
+import GithubRepos from './GithubRepos.astro';
+---
+
+<aside class="right-sidebar w-full xl:w-80 flex-shrink-0">
+  <div class="sidebar sticky top-20 space-y-4 max-h-[calc(100vh-100px)] overflow-hidden">
+    <!-- 博客宇宙 -->
+    <BlogUniverse />
+    
+    <!-- 部署站点 -->
+    <DeploySites />
+
+    <!-- GitHub 仓库 -->
+    <GithubRepos />
+  </div>
+</aside>
+
+<style>
+  .right-sidebar {
+    min-width: 0;
+  }
+
+  @media (max-width: 1280px) {
+    .right-sidebar {
+      width: 100%;
+    }
+    
+    .right-sidebar .sidebar {
+      position: relative;
+      top: 0;
+      height: auto;
+      max-height: none;
+    }
+  }
+</style>

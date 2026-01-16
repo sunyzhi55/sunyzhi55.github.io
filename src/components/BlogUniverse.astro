@@ -1,0 +1,143 @@
+---
+// BlogUniverse 组件 - 博客宇宙展示区域
+
+const blogs = [
+  {
+    id: 'flame',
+    name: '焰 · Flame',
+    emoji: '🔥',
+    framework: 'Astro',
+    url: 'https://sunyzhi55.github.io/astro-firefly-blog/',
+    description: '焰起于心',
+    color: 'from-[var(--color-fire)]/20 to-orange-500/20',
+  },
+  {
+    id: 'flumina',
+    name: '煴 · Flumina',
+    emoji: '🪵',
+    framework: 'VitePress',
+    url: 'https://sunyzhi55.github.io/vitepress-teek-blog/',
+    description: '煴藏于河',
+    color: 'from-[var(--color-earth)]/20 to-amber-500/20',
+  },
+  {
+    id: 'xi',
+    name: '熹 · Xi',
+    emoji: '🕯️',
+    framework: 'Hugo',
+    url: '#',
+    description: '熹生于夜',
+    color: 'from-purple-500/20 to-pink-500/20',
+    coming: true,
+  },
+];
+---
+
+<div class="card p-4">
+  <div class="flex items-center gap-2 mb-3">
+    <span class="text-lg">🌌</span>
+    <h3 class="text-base font-semibold text-[var(--color-text)]">博客宇宙</h3>
+  </div>
+
+  <!-- 诗句 -->
+  <p class="text-xs text-[var(--color-text-secondary)] italic mb-3 px-1">
+    "焰起于心，煴藏于河，熹生于夜。"
+  </p>
+
+  <!-- 滚动容器 -->
+  <div class="scroll-wrapper h-48 overflow-hidden relative">
+    <div class="scroll-inner">
+      {blogs.map((blog) => (
+        <a 
+          href={blog.coming ? undefined : blog.url}
+          target={blog.coming ? undefined : "_blank"}
+          rel="noopener noreferrer"
+          class:list={[
+            "blog-card block mb-2 p-3 rounded-xl transition-all duration-300",
+            `bg-gradient-to-br ${blog.color}`,
+            blog.coming ? "opacity-60 cursor-not-allowed" : "hover:scale-[1.02] cursor-pointer"
+          ]}
+        >
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">{blog.emoji}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <h4 class="font-medium text-sm text-[var(--color-text)] truncate">{blog.name}</h4>
+                {blog.coming && (
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]">
+                    即将
+                  </span>
+                )}
+              </div>
+              <p class="text-xs text-[var(--color-text-secondary)]">{blog.description}</p>
+            </div>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-card)] text-[var(--color-accent)]">
+              {blog.framework}
+            </span>
+          </div>
+        </a>
+      ))}
+      
+      <!-- 复制一份用于无缝滚动 -->
+      {blogs.map((blog) => (
+        <a 
+          href={blog.coming ? undefined : blog.url}
+          target={blog.coming ? undefined : "_blank"}
+          rel="noopener noreferrer"
+          class:list={[
+            "blog-card block mb-2 p-3 rounded-xl transition-all duration-300",
+            `bg-gradient-to-br ${blog.color}`,
+            blog.coming ? "opacity-60 cursor-not-allowed" : "hover:scale-[1.02] cursor-pointer"
+          ]}
+        >
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">{blog.emoji}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <h4 class="font-medium text-sm text-[var(--color-text)] truncate">{blog.name}</h4>
+                {blog.coming && (
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]">
+                    即将
+                  </span>
+                )}
+              </div>
+              <p class="text-xs text-[var(--color-text-secondary)]">{blog.description}</p>
+            </div>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-card)] text-[var(--color-accent)]">
+              {blog.framework}
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .scroll-wrapper {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+
+  .scroll-inner {
+    animation: scrollUp 18s linear infinite;
+  }
+
+  .scroll-wrapper:hover .scroll-inner {
+    animation-play-state: paused;
+  }
+
+  @keyframes scrollUp {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+</style>

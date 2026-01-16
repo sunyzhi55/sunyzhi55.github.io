@@ -1,0 +1,202 @@
+---
+// Terminal 组件 - 命令行模拟
+---
+
+<div class="terminal">
+  <div class="terminal-header">
+    <span class="terminal-dot bg-red-500"></span>
+    <span class="terminal-dot bg-yellow-500"></span>
+    <span class="terminal-dot bg-green-500"></span>
+    <span class="ml-4 text-xs text-gray-400">sunyzhi55@portal ~ </span>
+  </div>
+  <div id="terminalContent" class="terminal-content text-sm">
+    <div class="terminal-line text-gray-500 mb-2">
+      # 欢迎来到燧之门户终端。输入 'help' 查看可用命令。
+    </div>
+    <div id="terminalOutput"></div>
+    <div class="flex items-center mt-2">
+      <span class="terminal-prompt mr-2">❯</span>
+      <input 
+        type="text" 
+        id="terminalInput" 
+        class="terminal-input"
+        placeholder="输入命令..."
+        autocomplete="off"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  const terminalInput = document.getElementById('terminalInput') as HTMLInputElement;
+  const terminalOutput = document.getElementById('terminalOutput');
+  const terminalContent = document.getElementById('terminalContent');
+
+  // 命令映射
+  const siteMap: Record<string, string> = {
+    'flame': 'https://sunyzhi55.github.io/astro-firefly-blog/',
+    'flumina': 'https://sunyzhi55.github.io/vitepress-teek-blog/',
+    'webgame': 'https://sunyzhi55.github.io/WebGame/'
+  };
+
+  // 可用站点列表
+  const sites = [
+    { name: 'flame', desc: '焰 · Astro 博客' },
+    { name: 'flumina', desc: '煴 · VitePress 博客' },
+    { name: 'webgame', desc: 'WebGame 小游戏' }
+  ];
+
+  // 命令历史
+  let commandHistory: string[] = [];
+  let historyIndex = -1;
+
+  // 添加输出行
+  function addOutput(content: string, type: 'normal' | 'success' | 'error' | 'info' = 'normal') {
+    const line = document.createElement('div');
+    line.className = 'terminal-line mb-1';
+    
+    switch (type) {
+      case 'success':
+        line.style.color = '#6a9955';
+        break;
+      case 'error':
+        line.style.color = '#f44747';
+        break;
+      case 'info':
+        line.style.color = '#569cd6';
+        break;
+      default:
+        line.style.color = '#d4d4d4';
+    }
+    
+    line.innerHTML = content;
+    terminalOutput?.appendChild(line);
+    
+    // 滚动到底部
+    if (terminalContent) {
+      terminalContent.scrollTop = terminalContent.scrollHeight;
+    }
+  }
+
+  // 添加命令回显
+  function addCommand(cmd: string) {
+    const line = document.createElement('div');
+    line.className = 'terminal-line mb-1';
+    line.innerHTML = `<span class="terminal-prompt">❯</span> <span style="color: #ce9178;">${cmd}</span>`;
+    terminalOutput?.appendChild(line);
+  }
+
+  // 处理命令
+  function handleCommand(input: string) {
+    const cmd = input.trim().toLowerCase();
+    
+    if (!cmd) return;
+    
+    // 添加到历史
+    commandHistory.push(cmd);
+    historyIndex = commandHistory.length;
+    
+    // 回显命令
+    addCommand(input);
+    
+    // 解析命令
+    const parts = cmd.split(/\s+/);
+    const command = parts[0];
+    const args = parts.slice(1);
+
+    switch (command) {
+      case 'help':
+        addOutput('可用命令:', 'info');
+        addOutput('  <span style="color:#dcdcaa">help</span>     - 显示帮助信息');
+        addOutput('  <span style="color:#dcdcaa">ls</span>       - 列出可访问的站点');
+        addOutput('  <span style="color:#dcdcaa">cd</span> &lt;站点&gt; - 跳转到指定站点');
+        addOutput('  <span style="color:#dcdcaa">clear</span>    - 清空终端');
+        addOutput('  <span style="color:#dcdcaa">about</span>    - 关于本门户');
+        break;
+        
+      case 'ls':
+        addOutput('可访问的站点:', 'info');
+        sites.forEach(site => {
+          addOutput(`  📁 <span style="color:#4ec9b0">${site.name}</span> - ${site.desc}`);
+        });
+        break;
+        
+      case 'cd':
+        if (args.length === 0) {
+          addOutput('用法: cd <站点名>', 'error');
+          addOutput('使用 ls 查看可用站点');
+        } else {
+          const target = args[0].toLowerCase();
+          if (siteMap[target]) {
+            addOutput(`正在跳转到 ${target}...`, 'success');
+            setTimeout(() => {
+              window.open(siteMap[target], '_blank');
+            }, 500);
+          } else {
+            addOutput(`未找到站点: ${target}`, 'error');
+            addOutput('使用 ls 查看可用站点', 'info');
+          }
+        }
+        break;
+        
+      case 'clear':
+        if (terminalOutput) {
+          terminalOutput.innerHTML = '';
+        }
+        break;
+        
+      case 'about':
+        addOutput('╔════════════════════════════════════╗', 'info');
+        addOutput('║     燧之门户 · Personal Portal     ║', 'info');
+        addOutput('╚════════════════════════════════════╝', 'info');
+        addOutput('');
+        addOutput('这里是 sunyzhi55 的个人宇宙入口');
+        addOutput('融合工程理性与东方抽象美学');
+        addOutput('');
+        addOutput('"焰起于心，煴藏于河，熹生于夜。"', 'success');
+        break;
+        
+      case 'sudo':
+        addOutput('你没有超级用户权限 😄', 'error');
+        break;
+        
+      case 'exit':
+        addOutput('这是一个门户，不是真正的终端。', 'info');
+        addOutput('但既然你想离开...何不去探索其他世界？', 'info');
+        addOutput('输入 ls 查看可访问的站点', 'success');
+        break;
+        
+      default:
+        addOutput(`未知命令: ${command}`, 'error');
+        addOutput('输入 help 查看可用命令', 'info');
+    }
+  }
+
+  // 输入事件
+  terminalInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      handleCommand(terminalInput.value);
+      terminalInput.value = '';
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        historyIndex--;
+        terminalInput.value = commandHistory[historyIndex];
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex < commandHistory.length - 1) {
+        historyIndex++;
+        terminalInput.value = commandHistory[historyIndex];
+      } else {
+        historyIndex = commandHistory.length;
+        terminalInput.value = '';
+      }
+    }
+  });
+
+  // 点击终端时聚焦输入框
+  document.querySelector('.terminal')?.addEventListener('click', () => {
+    terminalInput?.focus();
+  });
+</script>

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.vscode/
+.env
+package-lock.json
+yarn.lock
+coverage/
+.idea/
+
+# static assets
+public/**
+
+# optional caches
+.biome/

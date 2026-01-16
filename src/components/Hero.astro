@@ -1,0 +1,92 @@
+---
+// Hero 组件 - 欢迎区域
+---
+
+<section class="relative overflow-hidden py-12 animate-fade-in">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="card p-8">
+      <div class="text-center space-y-8">
+    <!-- 太极 / 日月视觉元素 -->
+    <div class="relative w-32 h-32 mx-auto animate-float">
+      <svg viewBox="0 0 100 100" class="w-full h-full">
+        <!-- 外圈光晕 -->
+        <circle cx="50" cy="50" r="48" fill="none" stroke="var(--color-accent)" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-accent)" stroke-width="0.3" opacity="0.2"/>
+        
+        <!-- 太极图 -->
+        <defs>
+          <linearGradient id="yinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2f4f4f"/>
+            <stop offset="100%" style="stop-color:#1a1a2e"/>
+          </linearGradient>
+          <linearGradient id="yangGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f5f5dc"/>
+            <stop offset="100%" style="stop-color:#e8e4d4"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        
+        <!-- 阴 -->
+        <path d="M50,5 A45,45 0 0,1 50,95 A22.5,22.5 0 0,1 50,50 A22.5,22.5 0 0,0 50,5" 
+              fill="url(#yinGradient)" filter="url(#glow)"/>
+        <!-- 阳 -->
+        <path d="M50,5 A45,45 0 0,0 50,95 A22.5,22.5 0 0,0 50,50 A22.5,22.5 0 0,1 50,5" 
+              fill="url(#yangGradient)" filter="url(#glow)"/>
+        
+        <!-- 阴阳眼 -->
+        <circle cx="50" cy="27.5" r="5" fill="url(#yinGradient)"/>
+        <circle cx="50" cy="72.5" r="5" fill="url(#yangGradient)"/>
+        
+        <!-- 日 -->
+        <circle cx="50" cy="27.5" r="2" fill="#ffcc00" class="animate-pulse-soft"/>
+        <!-- 月 -->
+        <circle cx="50" cy="72.5" r="2" fill="#4a9eff" class="animate-pulse-soft"/>
+      </svg>
+    </div>
+
+    <!-- 欢迎文字 -->
+    <div class="space-y-4">
+      <h1 class="text-3xl md:text-4xl font-bold text-[var(--color-text)]">
+        欢迎来到 <span class="text-[var(--color-accent)]">燧之门户</span>
+      </h1>
+      <p class="text-lg text-[var(--color-text-secondary)] max-w-md mx-auto">
+        这里不是文章列表，而是我所有世界的入口
+      </p>
+    </div>
+
+    <!-- 诗句 -->
+    <blockquote class="relative px-8 py-6 max-w-lg mx-auto">
+      <div class="absolute left-0 top-0 text-4xl text-[var(--color-accent)] opacity-30">"</div>
+      <p class="text-xl md:text-2xl font-medium text-[var(--color-text)] italic tracking-wider">
+        焰起于心，煴藏于河，熹生于夜。
+      </p>
+      <div class="absolute right-0 bottom-0 text-4xl text-[var(--color-accent)] opacity-30">"</div>
+    </blockquote>
+
+    <!-- 装饰线 -->
+    <div class="flex items-center justify-center gap-4 pt-4">
+      <div class="w-16 h-px bg-gradient-to-r from-transparent to-[var(--color-accent)]"></div>
+      <div class="w-2 h-2 rounded-full bg-[var(--color-accent)]"></div>
+      <div class="w-16 h-px bg-gradient-to-l from-transparent to-[var(--color-accent)]"></div>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes gentle-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  section {
+    animation: fadeIn 1s ease-out;
+  }
+</style>

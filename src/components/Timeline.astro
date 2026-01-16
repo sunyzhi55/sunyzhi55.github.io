@@ -1,0 +1,175 @@
+---
+// Timeline 组件 - 个人经历时间轴
+
+const experiences = [
+  {
+    year: '2024',
+    title: '开启新篇章',
+    description: '构建个人门户，整合所有项目入口',
+    icon: '🚀',
+  },
+  {
+    year: '2023',
+    title: '博客宇宙',
+    description: '创建多个技术博客，探索不同框架',
+    icon: '📝',
+  },
+  {
+    year: '2022',
+    title: '技术探索',
+    description: '深入前端技术栈，开始开源贡献',
+    icon: '💻',
+  },
+  {
+    year: '2021',
+    title: '编程起航',
+    description: '踏入编程世界，开始学习之旅',
+    icon: '🌱',
+  },
+];
+---
+
+<section class="timeline-section">
+  <div class="card p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-2xl">⏳</span>
+      <div>
+        <h2 class="text-xl font-semibold text-[var(--color-text)]">时光轨迹</h2>
+        <p class="text-xs text-[var(--color-text-secondary)]">记录我的旅程与项目里程碑</p>
+      </div>
+    </div>
+
+    <div class="timeline-container">
+      {experiences.map((exp, index) => (
+        <div 
+          class="timeline-item" 
+          style={`animation-delay: ${index * 0.1}s`}
+        >
+          <div class="timeline-marker">
+            <span class="marker-icon">{exp.icon}</span>
+            <div class="marker-line"></div>
+          </div>
+          <div class="timeline-content">
+            <span class="timeline-year">{exp.year}</span>
+            <h3 class="timeline-title">{exp.title}</h3>
+            <p class="timeline-desc">{exp.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline-container {
+    position: relative;
+    padding-left: 60px;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 32px;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-item:last-child .marker-line {
+    display: none;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .timeline-marker {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .marker-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-item:hover .marker-icon {
+    transform: scale(1.1);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 15px var(--color-shadow);
+  }
+
+  .marker-line {
+    width: 2px;
+    height: calc(100% + 32px);
+    background: linear-gradient(
+      to bottom,
+      var(--color-border),
+      var(--color-accent),
+      var(--color-border)
+    );
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-content {
+    background: var(--color-bg-secondary);
+    padding: 16px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-item:hover .timeline-content {
+    background: var(--color-bg);
+    transform: translateX(5px);
+  }
+
+  .timeline-year {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-accent);
+    background: var(--color-card);
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProfileCard from '../components/ProfileCard.astro';
+import RightSidebar from '../components/RightSidebar.astro';
+import FunTabs from '../components/FunTabs.astro';
+import MediaCollection from '../components/MediaCollection.astro';
+import Timeline from '../components/Timeline.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="燧之门户 · Personal Portal">
+  <Header />
+  
+  <!-- 主内容区域 -->
+  <main class="pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4">
+      
+      <!-- 三栏布局 -->
+      <div class="flex flex-col xl:flex-row gap-6 mt-6">
+        
+        <!-- 左侧边栏：个人信息（固定） -->
+        <ProfileCard />
+
+        <!-- 中间主区域 -->
+        <div class="main-content flex-1 min-w-0 space-y-8">
+          
+          <!-- Hero 欢迎区域 -->
+          <section id="hero">
+            <Hero />
+          </section>
+
+          <!-- Fun 区域（标签页） -->
+          <section id="fun">
+            <FunTabs />
+          </section>
+
+          <!-- 音乐与图片收藏 -->
+          <section id="media">
+            <MediaCollection />
+          </section>
+
+          <!-- 个人经历时间轴 -->
+          <section id="timeline">
+            <Timeline />
+          </section>
+
+        </div>
+
+        <!-- 右侧边栏：博客宇宙 + Demo（固定） -->
+        <RightSidebar />
+        
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <Footer />
+</Layout>
+
+<style>
+  /* 页面加载动画 */
+  @keyframes pageLoad {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  main {
+    animation: pageLoad 0.8s ease-out;
+  }
+
+  .main-content {
+    min-width: 0;
+  }
+
+  /* 区域间距 */
+  section {
+    scroll-margin-top: 80px;
+  }
+
+  /* 响应式布局 */
+  @media (max-width: 1280px) {
+    .main-content {
+      order: -1;
+    }
+  }
+</style>
+

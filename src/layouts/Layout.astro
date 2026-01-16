@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import BackgroundCarousel from '../components/BackgroundCarousel.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '个人门户 - 所有世界的入口' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-color="amber" data-bg-mode="solid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>{title}</title>
+    
+    <script is:inline>
+      // 初始化主题与背景（防止闪烁）
+      (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedGlobalTheme = localStorage.getItem('globalTheme') || 'classic';
+        const savedColor = localStorage.getItem('themeColor');
+        const savedHue = localStorage.getItem('customHue');
+        const savedBgMode = localStorage.getItem('bgMode') || 'solid';
+        const useCustomHue = localStorage.getItem('useCustomHue') === 'true';
+        
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.documentElement.setAttribute('data-bg-mode', savedBgMode);
+
+        if (savedGlobalTheme !== 'classic') {
+          // 使用全局主题
+          document.documentElement.setAttribute('data-color', savedGlobalTheme);
+        } else {
+          // classic 模式下，检查是否使用自定义色相
+          if (useCustomHue && savedHue) {
+            document.documentElement.style.setProperty('--theme-hue', savedHue);
+            document.documentElement.removeAttribute('data-color');
+          } else if (savedColor) {
+            document.documentElement.setAttribute('data-color', savedColor);
+          } else {
+            document.documentElement.setAttribute('data-color', 'amber');
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <BackgroundCarousel />
+    <div class="min-h-screen">
+      <slot />
+    </div>
+  </body>
+</html>

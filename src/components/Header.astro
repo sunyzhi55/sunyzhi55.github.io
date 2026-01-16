@@ -1,0 +1,429 @@
+---
+// Header 组件 - 顶部导航栏
+const navItems = [
+  { id: 'hero', label: '首页', icon: '🏠' },
+  { id: 'fun', label: '互动', icon: '🎮' },
+  { id: 'media', label: '收藏', icon: '🎨' },
+  { id: 'timeline', label: '轨迹', icon: '⏳' },
+];
+
+const themeColors = [
+  { id: 'amber', color: 'hsl(35, 60%, 45%)', name: '琥珀金' },
+  { id: 'emerald', color: 'hsl(160, 50%, 40%)', name: '翡翠绿' },
+  { id: 'sapphire', color: 'hsl(220, 55%, 45%)', name: '宝石蓝' },
+  { id: 'rose', color: 'hsl(350, 55%, 50%)', name: '玫瑰红' },
+  { id: 'amethyst', color: 'hsl(280, 50%, 50%)', name: '紫水晶' },
+  { id: 'celadon', color: 'hsl(175, 40%, 45%)', name: '青瓷' },
+  { id: 'ink', color: 'hsl(220, 15%, 35%)', name: '墨色' },
+  { id: 'cinnabar', color: 'hsl(5, 65%, 50%)', name: '朱砂' },
+];
+
+const globalThemes = [
+  { id: 'classic', name: '经典' },
+  { id: 'moonlight', name: 'Moonlight' },
+  { id: 'aura', name: 'Aura' },
+  { id: 'synthwave84', name: 'SynthWave 84' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[var(--color-bg)]/80 border-b border-[var(--color-border)]">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Logo / 站点名 -->
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 relative">
+        <svg viewBox="0 0 100 100" class="w-full h-full animate-rotate" style="animation-duration: 30s;">
+          <defs>
+            <clipPath id="yinClip">
+              <path d="M50,0 A50,50 0 0,1 50,100 A25,25 0 0,1 50,50 A25,25 0 0,0 50,0"/>
+            </clipPath>
+            <clipPath id="yangClip">
+              <path d="M50,0 A50,50 0 0,0 50,100 A25,25 0 0,0 50,50 A25,25 0 0,1 50,0"/>
+            </clipPath>
+          </defs>
+          <circle cx="50" cy="50" r="48" fill="var(--color-yin)" clip-path="url(#yinClip)"/>
+          <circle cx="50" cy="50" r="48" fill="var(--color-yang)" clip-path="url(#yangClip)"/>
+          <circle cx="50" cy="25" r="6" fill="var(--color-yin)"/>
+          <circle cx="50" cy="75" r="6" fill="var(--color-yang)"/>
+        </svg>
+      </div>
+      <span class="text-lg font-semibold text-[var(--color-text)] hidden sm:block">燧之门户</span>
+    </div>
+
+    <!-- 导航链接 -->
+    <nav class="hidden md:flex items-center gap-1">
+      {navItems.map((item) => (
+        <a 
+          href={`#${item.id}`}
+          class="nav-link flex items-center gap-1.5"
+          data-nav={item.id}
+        >
+          <span class="text-sm">{item.icon}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- 右侧控制区 -->
+    <div class="flex items-center gap-2">
+      <!-- 主题色选择器 -->
+      <div class="relative">
+        <button 
+          id="colorToggle"
+          class="p-2 rounded-full hover:bg-[var(--color-bg-secondary)] transition-colors flex items-center gap-1"
+          title="主题色"
+        >
+          <div class="w-5 h-5 rounded-full bg-[var(--color-accent)]"></div>
+          <svg class="w-3 h-3 text-[var(--color-text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        
+        <!-- 颜色选择面板 -->
+        <div id="colorPanel" class="absolute right-0 top-full mt-2 p-3 card hidden min-w-[220px]">
+          <p class="text-xs text-[var(--color-text-secondary)] mb-2">背景模式</p>
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button class="bg-mode-btn" data-bg="transparent">全屏透明</button>
+            <button class="bg-mode-btn" data-bg="solid">纯色主题</button>
+          </div>
+
+          <p class="text-xs text-[var(--color-text-secondary)] mb-2">全局主题</p>
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            {globalThemes.map((theme) => (
+              <button
+                class="global-theme-btn"
+                data-global-theme={theme.id}
+              >
+                {theme.name}
+              </button>
+            ))}
+          </div>
+
+          <div id="classicThemePanel">
+            <p class="text-xs text-[var(--color-text-secondary)] mb-2">预设主题</p>
+            <div class="grid grid-cols-4 gap-2 mb-3">
+              {themeColors.map((theme) => (
+                <button
+                  class="theme-color-btn"
+                  style={`background: ${theme.color}`}
+                  data-color={theme.id}
+                  title={theme.name}
+                />
+              ))}
+            </div>
+            <p class="text-xs text-[var(--color-text-secondary)] mb-2">自定义</p>
+            <div class="flex items-center gap-2">
+              <input 
+                type="range" 
+                id="hueSlider" 
+                min="0" 
+                max="360" 
+                value="35"
+                class="flex-1 h-2 rounded-full appearance-none cursor-pointer"
+                style="background: linear-gradient(to right, hsl(0,60%,50%), hsl(60,60%,50%), hsl(120,60%,50%), hsl(180,60%,50%), hsl(240,60%,50%), hsl(300,60%,50%), hsl(360,60%,50%))"
+              />
+              <div id="huePreview" class="w-6 h-6 rounded-full border border-[var(--color-border)]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- 主题切换 -->
+      <button 
+        id="themeToggle"
+        class="p-2 rounded-full hover:bg-[var(--color-bg-secondary)] transition-colors"
+        title="切换明暗"
+      >
+        <svg id="sunIcon" class="w-5 h-5 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg id="moonIcon" class="w-5 h-5 text-[var(--color-accent)] hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+
+      <!-- 移动端菜单 -->
+      <button 
+        id="mobileMenuToggle"
+        class="p-2 rounded-full hover:bg-[var(--color-bg-secondary)] transition-colors md:hidden"
+      >
+        <svg class="w-5 h-5 text-[var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 移动端导航 -->
+  <nav id="mobileMenu" class="hidden md:hidden border-t border-[var(--color-border)] bg-[var(--color-card)]">
+    <div class="p-4 flex flex-wrap gap-2">
+      {navItems.map((item) => (
+        <a 
+          href={`#${item.id}`}
+          class="nav-link flex items-center gap-1.5 flex-1 justify-center min-w-[80px]"
+          data-nav={item.id}
+        >
+          <span>{item.icon}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </div>
+  </nav>
+</header>
+
+<script>
+  // 主题切换
+  const themeToggle = document.getElementById('themeToggle');
+  const sunIcon = document.getElementById('sunIcon');
+  const moonIcon = document.getElementById('moonIcon');
+
+  function updateThemeIcons() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    sunIcon?.classList.toggle('hidden', isDark);
+    moonIcon?.classList.toggle('hidden', !isDark);
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcons();
+  });
+
+  updateThemeIcons();
+
+  // 主题色选择
+  const colorToggle = document.getElementById('colorToggle');
+  const colorPanel = document.getElementById('colorPanel');
+  const colorBtns = document.querySelectorAll('.theme-color-btn');
+  const hueSlider = document.getElementById('hueSlider') as HTMLInputElement;
+  const huePreview = document.getElementById('huePreview');
+  const globalThemeBtns = document.querySelectorAll('.global-theme-btn');
+  const bgModeBtns = document.querySelectorAll('.bg-mode-btn');
+  const classicThemePanel = document.getElementById('classicThemePanel');
+
+  colorToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    colorPanel?.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!colorPanel?.contains(e.target as Node) && e.target !== colorToggle) {
+      colorPanel?.classList.add('hidden');
+    }
+  });
+
+  function setClassicPanelDisabled(isDisabled: boolean) {
+    if (classicThemePanel) {
+      classicThemePanel.classList.toggle('is-disabled', isDisabled);
+    }
+    colorBtns.forEach(btn => {
+      (btn as HTMLButtonElement).disabled = isDisabled;
+    });
+    if (hueSlider) {
+      hueSlider.disabled = isDisabled;
+    }
+  }
+
+  function getSavedClassicColor() {
+    return localStorage.getItem('themeColor') || 'amber';
+  }
+
+  function applyClassicColor() {
+    const savedColor = getSavedClassicColor();
+    document.documentElement.setAttribute('data-color', savedColor);
+    document.querySelector(`[data-color="${savedColor}"]`)?.classList.add('active');
+  }
+
+  function setGlobalTheme(themeId: string) {
+    localStorage.setItem('globalTheme', themeId);
+    globalThemeBtns.forEach(btn => {
+      btn.classList.toggle('active', (btn as HTMLElement).dataset.globalTheme === themeId);
+    });
+
+    if (themeId === 'classic') {
+      setClassicPanelDisabled(false);
+      const useCustomHue = localStorage.getItem('useCustomHue') === 'true';
+      const savedHue = localStorage.getItem('customHue');
+      
+      if (useCustomHue && savedHue) {
+        document.documentElement.style.setProperty('--theme-hue', savedHue);
+        document.documentElement.removeAttribute('data-color');
+        if (hueSlider) hueSlider.value = savedHue;
+      } else {
+        applyClassicColor();
+      }
+    } else {
+      setClassicPanelDisabled(true);
+      document.documentElement.setAttribute('data-color', themeId);
+      document.documentElement.style.removeProperty('--theme-hue');
+      colorBtns.forEach(b => b.classList.remove('active'));
+    }
+  }
+
+  // 预设颜色
+  colorBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if ((localStorage.getItem('globalTheme') || 'classic') !== 'classic') return;
+      const color = (btn as HTMLElement).dataset.color;
+      document.documentElement.setAttribute('data-color', color || 'amber');
+      localStorage.setItem('themeColor', color || 'amber');
+      localStorage.setItem('useCustomHue', 'false');
+      
+      colorBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // 重置自定义色相
+      document.documentElement.style.removeProperty('--theme-hue');
+    });
+  });
+
+  // 自定义色相
+  function updateCustomHue(hue: number) {
+    document.documentElement.style.setProperty('--theme-hue', hue.toString());
+    document.documentElement.removeAttribute('data-color');
+    if (huePreview) {
+      huePreview.style.background = `hsl(${hue}, 60%, 50%)`;
+    }
+    localStorage.setItem('customHue', hue.toString());
+    localStorage.setItem('useCustomHue', 'true');
+    
+    // 移除预设选中状态
+    colorBtns.forEach(b => b.classList.remove('active'));
+  }
+
+  hueSlider?.addEventListener('input', () => {
+    if ((localStorage.getItem('globalTheme') || 'classic') !== 'classic') return;
+    updateCustomHue(parseInt(hueSlider.value));
+  });
+
+  // 全局主题选择
+  globalThemeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const themeId = (btn as HTMLElement).dataset.globalTheme || 'classic';
+      setGlobalTheme(themeId);
+    });
+  });
+
+  // 背景模式选择
+  function setBgMode(mode: string) {
+    document.documentElement.setAttribute('data-bg-mode', mode);
+    localStorage.setItem('bgMode', mode);
+    bgModeBtns.forEach(btn => {
+      btn.classList.toggle('active', (btn as HTMLElement).dataset.bg === mode);
+    });
+    window.dispatchEvent(new Event('bg-mode-change'));
+  }
+
+  bgModeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = (btn as HTMLElement).dataset.bg || 'solid';
+      setBgMode(mode);
+    });
+  });
+
+  // 初始化主题色
+  const savedColor = localStorage.getItem('themeColor');
+  const savedHue = localStorage.getItem('customHue');
+  const savedGlobalTheme = localStorage.getItem('globalTheme') || 'classic';
+  const useCustomHue = localStorage.getItem('useCustomHue') === 'true';
+
+  setGlobalTheme(savedGlobalTheme);
+
+  if (savedGlobalTheme === 'classic') {
+    if (useCustomHue && savedHue) {
+      // 使用自定义色相
+      updateCustomHue(parseInt(savedHue));
+      if (hueSlider) hueSlider.value = savedHue;
+    } else if (savedColor) {
+      // 使用预设颜色
+      document.documentElement.setAttribute('data-color', savedColor);
+      document.querySelector(`[data-color="${savedColor}"]`)?.classList.add('active');
+    } else {
+      // 默认琥珀色
+      document.querySelector('[data-color="amber"]')?.classList.add('active');
+    }
+  }
+
+  // 初始化预览
+  if (huePreview && hueSlider) {
+    huePreview.style.background = `hsl(${hueSlider.value}, 60%, 50%)`;
+  }
+
+  const savedBgMode = localStorage.getItem('bgMode') || 'solid';
+  setBgMode(savedBgMode);
+
+  // 移动端菜单
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  mobileMenuToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  // 导航高亮
+  const navLinks = document.querySelectorAll('[data-nav]');
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -60% 0px',
+    threshold: 0
+  };
+
+  const observerCallback: IntersectionObserverCallback = (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', (link as HTMLElement).dataset.nav === id);
+        });
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+  
+  document.querySelectorAll('section[id]').forEach(section => {
+    observer.observe(section);
+  });
+
+  // 点击导航关闭移动菜单
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+    });
+  });
+</script>
+
+<style>
+  .bg-mode-btn,
+  .global-theme-btn {
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .bg-mode-btn:hover,
+  .global-theme-btn:hover {
+    color: var(--color-text);
+    border-color: var(--color-accent);
+  }
+
+  .bg-mode-btn.active,
+  .global-theme-btn.active {
+    background: var(--color-card);
+    color: var(--color-text);
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
+
+  #classicThemePanel.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
