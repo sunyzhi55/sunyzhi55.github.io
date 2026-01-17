@@ -1,0 +1,24 @@
+---
+// ContactItem 组件 - 联系方式项
+interface Props {
+  href?: string;
+  icon: string; // SVG path
+}
+
+const { href, icon } = Astro.props;
+const Tag = href ? 'a' : 'div';
+const linkProps = href
+  ? {
+      href,
+      class:
+        'flex items-center gap-2 text-sm font-black text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors',
+    }
+  : { class: 'flex items-center gap-2 text-sm text-[var(--color-text)]' };
+---
+
+<Tag {...linkProps}>
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <Fragment set:html={icon} />
+  </svg>
+  <span class="font-bold"><slot /></span>
+</Tag>

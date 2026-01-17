@@ -1,5 +1,7 @@
 ---
 // BlogUniverse 组件 - 博客宇宙展示区域
+import ScrollContainer from './ScrollContainer.astro';
+import SidebarCard from './ui/SidebarCard.astro';
 
 const blogs = [
   {
@@ -33,111 +35,43 @@ const blogs = [
 ];
 ---
 
-<div class="card p-4">
-  <div class="flex items-center gap-2 mb-3">
-    <span class="text-lg">🌌</span>
-    <h3 class="text-base font-semibold text-[var(--color-text)]">博客宇宙</h3>
-  </div>
-
+<SidebarCard title="博客宇宙" icon="🌌">
   <!-- 诗句 -->
-  <p class="text-xs text-[var(--color-text-secondary)] italic mb-3 px-1">
+  <p class="text-xs text-[var(--color-text-secondary)] italic mb-3 px-1 -mt-1">
     "焰起于心，煴藏于河，熹生于夜。"
   </p>
 
   <!-- 滚动容器 -->
-  <div class="scroll-wrapper h-45 overflow-hidden relative">
-    <div class="scroll-inner">
-      {blogs.map((blog) => (
-        <a 
-          href={blog.coming ? undefined : blog.url}
-          target={blog.coming ? undefined : "_blank"}
-          rel="noopener noreferrer"
-          class:list={[
-            "blog-card block mb-2 p-3 rounded-xl transition-all duration-300",
-            `bg-gradient-to-br ${blog.color}`,
-            blog.coming ? "opacity-60 cursor-not-allowed" : "hover:scale-[1.02] cursor-pointer"
-          ]}
-        >
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">{blog.emoji}</span>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <h4 class="font-medium text-sm text-[var(--color-text)] truncate">{blog.name}</h4>
-                {blog.coming && (
-                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]">
-                    即将
-                  </span>
-                )}
-              </div>
-              <p class="text-xs text-[var(--color-text-secondary)]">{blog.description}</p>
+  <ScrollContainer height="h-45" duration={18} maskTop={8} maskBottom={8}>
+    {blogs.map((blog) => (
+      <a 
+        href={blog.coming ? undefined : blog.url}
+        target={blog.coming ? undefined : "_blank"}
+        rel="noopener noreferrer"
+        class:list={[
+          "blog-card block mb-2 p-3 rounded-xl transition-all duration-300",
+          `bg-gradient-to-br ${blog.color}`,
+          blog.coming ? "opacity-60 cursor-not-allowed" : "hover:scale-[1.02] cursor-pointer"
+        ]}
+      >
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">{blog.emoji}</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <h4 class="font-medium text-sm text-[var(--color-text)] truncate">{blog.name}</h4>
+              {blog.coming && (
+                <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]">
+                  即将
+                </span>
+              )}
             </div>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-card)] text-[var(--color-accent)]">
-              {blog.framework}
-            </span>
+            <p class="text-xs text-[var(--color-text-secondary)]">{blog.description}</p>
           </div>
-        </a>
-      ))}
-      
-      <!-- 复制一份用于无缝滚动 -->
-      {blogs.map((blog) => (
-        <a 
-          href={blog.coming ? undefined : blog.url}
-          target={blog.coming ? undefined : "_blank"}
-          rel="noopener noreferrer"
-          class:list={[
-            "blog-card block mb-2 p-3 rounded-xl transition-all duration-300",
-            `bg-gradient-to-br ${blog.color}`,
-            blog.coming ? "opacity-60 cursor-not-allowed" : "hover:scale-[1.02] cursor-pointer"
-          ]}
-        >
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">{blog.emoji}</span>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <h4 class="font-medium text-sm text-[var(--color-text)] truncate">{blog.name}</h4>
-                {blog.coming && (
-                  <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]">
-                    即将
-                  </span>
-                )}
-              </div>
-              <p class="text-xs text-[var(--color-text-secondary)]">{blog.description}</p>
-            </div>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-card)] text-[var(--color-accent)]">
-              {blog.framework}
-            </span>
-          </div>
-        </a>
-      ))}
-    </div>
-  </div>
-</div>
-
-<style>
-  .scroll-wrapper {
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      black 8%,
-      black 92%,
-      transparent 100%
-    );
-  }
-
-  .scroll-inner {
-    animation: scrollUp 18s linear infinite;
-  }
-
-  .scroll-wrapper:hover .scroll-inner {
-    animation-play-state: paused;
-  }
-
-  @keyframes scrollUp {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-50%);
-    }
-  }
-</style>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-card)] text-[var(--color-accent)]">
+            {blog.framework}
+          </span>
+        </div>
+      </a>
+    ))}
+  </ScrollContainer>
+</SidebarCard>

@@ -1,0 +1,58 @@
+---
+// ScrollContainer 组件 - 可复用的无缝滚动容器
+interface Props {
+  height?: string; // 容器高度，如 'h-45', 'h-35'
+  duration?: number; // 滚动周期（秒）
+  maskTop?: number; // 顶部遮罩百分比
+  maskBottom?: number; // 底部遮罩百分比
+}
+
+const { height = 'h-40', duration = 20, maskTop = 6, maskBottom = 6 } = Astro.props;
+---
+
+<div 
+  class:list={["scroll-wrapper overflow-hidden relative", height]}
+  style={`--scroll-duration: ${duration}s; --mask-top: ${maskTop}%; --mask-bottom: ${100 - maskBottom}%;`}
+>
+  <div class="scroll-inner">
+    <slot />
+    <!-- 复制一份用于无缝滚动 -->
+    <slot />
+  </div>
+</div>
+
+<style>
+  .scroll-wrapper {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black var(--mask-top),
+      black var(--mask-bottom),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black var(--mask-top),
+      black var(--mask-bottom),
+      transparent 100%
+    );
+  }
+
+  .scroll-inner {
+    animation: scrollUp var(--scroll-duration) linear infinite;
+  }
+
+  .scroll-wrapper:hover .scroll-inner {
+    animation-play-state: paused;
+  }
+
+  @keyframes scrollUp {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+</style>

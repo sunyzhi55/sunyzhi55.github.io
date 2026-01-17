@@ -1,7 +1,8 @@
 ---
+import ImageGalleryItem from './ImageGalleryItem.astro';
 // MediaCollection 组件 - 音乐与图片收藏
 import MusicPlayer from './MusicPlayer.astro';
-import ImageGalleryItem from './ImageGalleryItem.astro';
+import SectionHeader from './ui/SectionHeader.astro';
 
 // 音乐数据 - 对应 public/music 目录下的文件
 const musicItems = [
@@ -97,12 +98,8 @@ const imageItems = [
 <section class="media-collection">
   <div class="card p-6">
     <!-- 标题区域 -->
-    <div class="flex items-center gap-4 mb-6">
-      <span class="text-2xl">🎨</span>
-      <div>
-        <h2 class="text-xl font-semibold text-[var(--color-text)]">灵感素材库</h2>
-        <p class="text-xs text-[var(--color-text-secondary)]">采集灵感与氛围，用于视觉与创作参考</p>
-      </div>
+    <div class="mb-6">
+      <SectionHeader title="灵感素材库" icon="🎨" subtitle="采集灵感与氛围，用于视觉与创作参考" />
     </div>
 
     <div class="media-grid">

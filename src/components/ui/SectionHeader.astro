@@ -1,0 +1,25 @@
+---
+// SectionHeader 组件 - 通用区块标题
+interface Props {
+  title: string;
+  icon?: string;
+  subtitle?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { title, icon, subtitle, size = 'md' } = Astro.props;
+
+const sizeClasses = {
+  sm: { icon: 'text-lg', title: 'text-base', subtitle: 'text-xs' },
+  md: { icon: 'text-2xl', title: 'text-xl', subtitle: 'text-xs' },
+  lg: { icon: 'text-3xl', title: 'text-2xl', subtitle: 'text-sm' },
+};
+---
+
+<div class="flex items-center gap-3">
+  {icon && <span class={sizeClasses[size].icon}>{icon}</span>}
+  <div>
+    <h2 class={`font-semibold text-[var(--color-text)] ${sizeClasses[size].title}`}>{title}</h2>
+    {subtitle && <p class={`text-[var(--color-text-secondary)] ${sizeClasses[size].subtitle}`}>{subtitle}</p>}
+  </div>
+</div>

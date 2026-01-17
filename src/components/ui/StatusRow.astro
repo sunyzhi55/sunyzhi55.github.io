@@ -1,0 +1,13 @@
+---
+// StatusRow 组件 - 状态行显示
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="flex items-center justify-between">
+  <span class="text-sm text-[var(--color-text-secondary)]">{label}</span>
+  <slot />
+</div>

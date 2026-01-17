@@ -1,5 +1,6 @@
 ---
 // Timeline 组件 - 个人经历时间轴
+import SectionHeader from './ui/SectionHeader.astro';
 
 const experiences = [
   {
@@ -31,12 +32,8 @@ const experiences = [
 
 <section class="timeline-section">
   <div class="card p-6">
-    <div class="flex items-center gap-3 mb-4">
-      <span class="text-2xl">⏳</span>
-      <div>
-        <h2 class="text-xl font-semibold text-[var(--color-text)]">时光轨迹</h2>
-        <p class="text-xs text-[var(--color-text-secondary)]">记录我的旅程与项目里程碑</p>
-      </div>
+    <div class="mb-4">
+      <SectionHeader title="时光轨迹" icon="⏳" subtitle="记录我的旅程与项目里程碑" />
     </div>
 
     <div class="timeline-container">

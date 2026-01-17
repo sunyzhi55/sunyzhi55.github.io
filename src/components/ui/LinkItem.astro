@@ -1,0 +1,23 @@
+---
+// LinkItem 组件 - 通用链接项
+interface Props {
+  href: string;
+  icon?: string;
+  external?: boolean;
+}
+
+const { href, icon, external = true } = Astro.props;
+---
+
+<a 
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  class="flex items-center gap-2 p-2 rounded-lg mb-1.5 bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg)] transition-all hover:translate-x-1"
+>
+  {icon && <span class="text-lg">{icon}</span>}
+  <span class="text-sm text-[var(--color-text)] flex-1 truncate"><slot /></span>
+  <svg class="w-3.5 h-3.5 flex-shrink-0 text-[var(--color-text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+  </svg>
+</a>

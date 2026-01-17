@@ -200,3 +200,61 @@
     terminalInput?.focus();
   });
 </script>
+
+<style>
+  .terminal {
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    background: hsl(var(--theme-hue), 15%, 12%);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  :global([data-theme="dark"]) .terminal {
+    background: hsl(var(--theme-hue), 10%, 8%);
+  }
+
+  .terminal-header {
+    background: hsl(var(--theme-hue), 12%, 18%);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .terminal-content {
+    padding: 16px;
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .terminal-line {
+    color: #d4d4d4;
+    line-height: 1.6;
+  }
+
+  .terminal-prompt {
+    color: var(--color-accent-light);
+  }
+
+  .terminal-input {
+    background: transparent;
+    border: none;
+    color: #d4d4d4;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    width: calc(100% - 20px);
+    caret-color: var(--color-accent);
+  }
+
+  .terminal-input::placeholder {
+    color: #6a6a6a;
+  }
+</style>
