@@ -1,13 +1,16 @@
 ---
 import Footer from '../components/Footer.astro';
-import FunTabs from '../components/FunTabs.astro';
+
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
+// Astro 页面：个人门户首页
+// FunTabs 组件需要放在 Hero 组件之后以确保正确加载动画
+import Layout from '../layouts/Layout.astro';
+import FunTabs from '../components/FunTabs.astro';
 import MediaCollection from '../components/MediaCollection.astro';
 import ProfileCard from '../components/ProfileCard.astro';
 import RightSidebar from '../components/RightSidebar.astro';
 import Timeline from '../components/Timeline.astro';
-import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="燧之门户 · Personal Portal">
