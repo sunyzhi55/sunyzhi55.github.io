@@ -1,11 +1,36 @@
 ---
 // BackgroundCarousel 组件 - 背景轮播
+const bgImages = [
+  '/gallery/gallery_1.webp',
+  '/gallery/gallery_16.jpg',
+  '/gallery/gallery_31.webp',
+  '/gallery/gallery_116.jpg',
+  '/gallery/gallery_121.jpg',
+  '/gallery/gallery_126.jpg',
+  '/gallery/gallery_131.jpg',
+  '/gallery/gallery_136.jpg',
+  '/gallery/gallery_141.jpg',
+  '/gallery/gallery_146.jpg',
+  '/gallery/gallery_151.jpg',
+  '/gallery/gallery_166.png',
+  '/gallery/gallery_176.jpg',
+  '/gallery/gallery_186.png',
+  '/gallery/gallery_191.jpg',
+];
 ---
 
 <div id="siteBg" class="site-bg" aria-label="背景轮播">
-  <div id="bgTrack" class="bg-track">
-    <div id="bgSlideA" class="bg-image"></div>
-    <div id="bgSlideB" class="bg-image"></div>
+  <div
+    id="bgSwiper"
+    class="swiper bg-swiper"
+    aria-hidden="true"
+    data-images={JSON.stringify(bgImages)}
+  >
+    <div class="swiper-wrapper">
+      {bgImages.map((src) => (
+        <div class="swiper-slide bg-image" style={`background-image: url(${src})`}></div>
+      ))}
+    </div>
   </div>
 </div>
 
@@ -16,148 +41,86 @@
 </div>
 
 <script>
-  const bgImages = [
-    '/gallery/gallery_1.webp',
-    '/gallery/gallery_16.jpg',
-    '/gallery/gallery_31.webp',
-    '/gallery/gallery_116.jpg',
-    '/gallery/gallery_121.jpg',
-    '/gallery/gallery_126.jpg',
-    '/gallery/gallery_131.jpg',
-    '/gallery/gallery_136.jpg',
-    '/gallery/gallery_141.jpg',
-    '/gallery/gallery_146.jpg',
-    '/gallery/gallery_151.jpg',
-    '/gallery/gallery_166.png',
-    '/gallery/gallery_176.jpg',
-    '/gallery/gallery_186.png',
-    '/gallery/gallery_191.jpg',
-  ];
+  import Swiper from 'swiper';
+  import { Autoplay } from 'swiper/modules';
 
-  const bgTrack = document.getElementById('bgTrack');
-  const bgSlideA = document.getElementById('bgSlideA');
-  const bgSlideB = document.getElementById('bgSlideB');
+  const bgSwiperEl = document.getElementById('bgSwiper');
   const bgIndexEl = document.getElementById('bgIndex');
   const bgControlsEl = document.getElementById('bgControls');
   const prevBtn = document.getElementById('bgPrev');
   const nextBtn = document.getElementById('bgNext');
 
-  let currentIndex = parseInt(localStorage.getItem('bgIndex') || '0', 10);
-  if (Number.isNaN(currentIndex)) currentIndex = 0;
+  const bgImages = bgSwiperEl?.getAttribute('data-images')
+    ? JSON.parse(bgSwiperEl.getAttribute('data-images') || '[]')
+    : [];
 
-  let isAnimating = false;
-  let autoTimer: number | null = null;
-  const duration = 1200;
-  const easing = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
+  let currentIndex = parseInt(localStorage.getItem('bgIndex') || '0', 10);
+  if (Number.isNaN(currentIndex) || currentIndex < 0) currentIndex = 0;
+  if (currentIndex >= bgImages.length) currentIndex = 0;
 
   function getBgMode() {
     return document.documentElement.getAttribute('data-bg-mode') || 'solid';
   }
 
-  function updateBgControlsVisibility() {
-    if (!bgControlsEl) return;
-    const isTransparent = getBgMode() === 'transparent';
-    bgControlsEl.style.display = isTransparent ? 'flex' : 'none';
-    if (prevBtn) prevBtn.style.display = isTransparent ? 'block' : 'none';
-    if (nextBtn) nextBtn.style.display = isTransparent ? 'block' : 'none';
-    if (isTransparent) {
-      startAuto();
-    } else {
-      stopAuto();
-    }
-  }
-
-  function setSlides() {
-    if (!bgSlideA || !bgSlideB) return;
-    const nextIndex = (currentIndex + 1) % bgImages.length;
-    bgSlideA.style.backgroundImage = `url(${bgImages[currentIndex]})`;
-    bgSlideB.style.backgroundImage = `url(${bgImages[nextIndex]})`;
+  function updateIndex(index: number) {
+    currentIndex = index;
     if (bgIndexEl) bgIndexEl.textContent = `${currentIndex + 1}/${bgImages.length}`;
     localStorage.setItem('bgIndex', currentIndex.toString());
   }
 
-  function animateTo(targetIndex: number, direction: 'next' | 'prev') {
-    if (!bgTrack || !bgSlideA || !bgSlideB) return;
-    isAnimating = true;
+  function updateBgControlsVisibility(swiper: import('swiper').Swiper) {
+    if (!bgControlsEl || !prevBtn || !nextBtn) return;
+    const isTransparent = getBgMode() === 'transparent';
+    const hasMultiple = bgImages.length > 1;
 
-    const handleEnd = () => {
-      bgTrack.removeEventListener('transitionend', handleEnd);
-      currentIndex = targetIndex;
-      bgTrack.style.transition = 'none';
-      bgTrack.style.transform = 'translateX(0)';
-      setSlides();
-      requestAnimationFrame(() => {
-        bgTrack.style.transition = `transform ${duration}ms ${easing}`;
-      });
-      isAnimating = false;
-    };
+    const shouldShow = isTransparent && hasMultiple;
+    bgControlsEl.style.display = shouldShow ? 'flex' : 'none';
+    prevBtn.style.display = shouldShow ? 'block' : 'none';
+    nextBtn.style.display = shouldShow ? 'block' : 'none';
 
-    bgTrack.addEventListener('transitionend', handleEnd, { once: true });
-
-    if (direction === 'next') {
-      const nextIndex = (currentIndex + 1) % bgImages.length;
-      bgSlideA.style.backgroundImage = `url(${bgImages[currentIndex]})`;
-      bgSlideB.style.backgroundImage = `url(${bgImages[nextIndex]})`;
-      bgTrack.style.transition = `transform ${duration}ms ${easing}`;
-      bgTrack.style.transform = 'translateX(-50%)';
+    if (shouldShow) {
+      swiper.autoplay?.start();
     } else {
-      const prevIndex = (currentIndex - 1 + bgImages.length) % bgImages.length;
-      bgTrack.style.transition = 'none';
-      bgSlideA.style.backgroundImage = `url(${bgImages[prevIndex]})`;
-      bgSlideB.style.backgroundImage = `url(${bgImages[currentIndex]})`;
-      bgTrack.style.transform = 'translateX(-50%)';
-      requestAnimationFrame(() => {
-        bgTrack.style.transition = `transform ${duration}ms ${easing}`;
-        bgTrack.style.transform = 'translateX(0)';
-      });
+      swiper.autoplay?.stop();
     }
   }
 
-  function goNext() {
-    if (isAnimating) return;
-    const target = (currentIndex + 1) % bgImages.length;
-    animateTo(target, 'next');
+  if (bgSwiperEl && bgImages.length > 0) {
+    const swiper = new Swiper(bgSwiperEl, {
+      modules: [Autoplay],
+      effect: 'slide',
+      speed: 1200,
+      loop: true,
+      allowTouchMove: false,
+      initialSlide: currentIndex,
+      autoplay: {
+        delay: 9000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: false,
+      },
+      on: {
+        init(swiper) {
+          updateIndex(swiper.realIndex);
+          updateBgControlsVisibility(swiper);
+        },
+        slideChange(swiper) {
+          updateIndex(swiper.realIndex);
+        },
+      },
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      swiper.slidePrev();
+      swiper.autoplay?.start();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      swiper.slideNext();
+      swiper.autoplay?.start();
+    });
+
+    window.addEventListener('bg-mode-change', () => {
+      updateBgControlsVisibility(swiper);
+    });
   }
-
-  function goPrev() {
-    if (isAnimating) return;
-    const target = (currentIndex - 1 + bgImages.length) % bgImages.length;
-    animateTo(target, 'prev');
-  }
-
-  function startAuto() {
-    stopAuto();
-    autoTimer = setInterval(() => {
-      goNext();
-    }, 9000);
-  }
-
-  function stopAuto() {
-    if (autoTimer !== null) {
-      clearInterval(autoTimer);
-      autoTimer = null;
-    }
-  }
-
-  function restartAuto() {
-    startAuto();
-  }
-
-  prevBtn?.addEventListener('click', () => {
-    goPrev();
-    restartAuto();
-  });
-
-  nextBtn?.addEventListener('click', () => {
-    goNext();
-    restartAuto();
-  });
-
-  window.addEventListener('bg-mode-change', () => {
-    updateBgControlsVisibility();
-  });
-
-  setSlides();
-  updateBgControlsVisibility();
-  startAuto();
 </script>

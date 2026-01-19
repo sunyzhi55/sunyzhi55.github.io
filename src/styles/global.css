@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "swiper/css";
 
 /* ========== 主题色系统 ========== */
 :root {
@@ -263,25 +264,25 @@ body {
   overflow: hidden;
 }
 
-.site-bg .bg-track {
+.site-bg .bg-swiper {
   position: absolute;
   inset: 0;
-  display: flex;
-  width: 200%;
+  width: 100%;
   height: 100%;
-  transform: translateX(0);
-  will-change: transform;
+}
+
+.site-bg .swiper-wrapper,
+.site-bg .swiper-slide {
+  width: 100%;
+  height: 100%;
 }
 
 .site-bg .bg-image {
-  flex: 0 0 50%;
-  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.8;
   transition: filter 0.4s ease;
-  /* transform: scale(1.02); */
   filter: blur(0.7px) brightness(0.9) contrast(1.1) saturate(1.2);
   pointer-events: none;
 }
